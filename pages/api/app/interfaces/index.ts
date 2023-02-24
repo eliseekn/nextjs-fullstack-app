@@ -18,8 +18,8 @@ export type User = {
 }
 
 export type Tables = {
-    'posts': Post[],
-    'users': User[]
+    posts?: Post[],
+    users?: User[]
 }
 
 type Roles<T> = ['admin', 'user']
