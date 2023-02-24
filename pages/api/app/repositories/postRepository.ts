@@ -1,46 +1,55 @@
 import db from '../database'
-import { Post } from '../interfaces'
-import * as crypto from "crypto"
+import {Post, Repository} from '../interfaces'
+import {PostModel} from '../models'
 
-export default class PostRepository {
-    find = async (id: string) => {
+export default class PostRepository implements Repository {
+    private postModel: PostModel
+
+    constructor () {
+        this.postModel = new PostModel()
+    }
+
+    read = (): Post[] => {
+        db.read()
+        return db.data?.posts
+    }
+
+    write = (post: Post) => {
+        db.read()
+        post = this.postModel.set(post)
+        db.data?.posts?.push(post)
+    }
+
+    public find = async (id: string) => {
         return await db.read().then(() => {
-            let posts: Post[] = db.data?.posts
-            posts = posts.filter(post => post.id === id)
+            const posts: Post[] = this.read().filter(post => post.id === id)
             return posts[0]
         })
     }
 
-    findAll = async () => {
-        return await db.read().then(() => db.data?.posts)
-    }
+    findAll = async () => await db.read().then(() => this.read())
 
     create = async (post: Post) => {
-        post.id = crypto.randomUUID()
-        post.publishedAt =  new Date().toISOString()
-
-        db.data?.posts?.push(post)
-        return await db.write().then(() => db.data?.posts)
+        this.write(post)
+        return await db.write().then(() => this.read())
     }
 
-    update = async (id: string, post: Post) => {
-        return await db.read().then(() => {
-            let posts: Post[] = db.data?.posts
-            posts = posts.filter(post => post.id === id)
+    public update = async (id: string, post: Post) => {
+        return await db.read().then(async () => {
+            let posts: Post[] = this.read().filter(post => post.id === id)
             posts[0] = post
-
             db.data = {posts: posts}
-            return db.write().then(() => db.data?.posts)
+
+            return db.write().then(() => this.read())
         })
     }
 
-    destroy = async (id: string) => {
-        return await db.read().then(() => {
-            let posts: Post[] = db.data?.posts
-            posts = posts.filter(_post => _post.id !== id)
-
+    public destroy = async (id: string) => {
+        return await db.read().then(async () => {
+            let posts: Post[] = this.read().filter(post => post.id !== id)
             db.data = {posts: posts}
-            return db.write().then(() => db.data?.posts)
+
+            return db.write().then(() => this.read())
         })
     }
 }

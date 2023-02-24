@@ -6,7 +6,6 @@ import { Tables } from '../interfaces';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const file = join(__dirname, 'db.json')
-
 const adapter = new JSONFile<Tables>(file)
 const db = new Low(adapter)
 

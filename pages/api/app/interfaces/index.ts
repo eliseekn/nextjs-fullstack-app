@@ -3,9 +3,11 @@ export type Post = {
     title: string,
     slug: string,
     content: string,
-    publishedAt: string,
+    publishedAt?: string,
     editedAt?: string
 }
+
+export type Roles<T> = ['admin', 'user']
 
 export type User = {
     id?: string,
@@ -13,7 +15,7 @@ export type User = {
     email: string,
     phone: string,
     role: Roles<string>,
-    createdAt: string,
+    createdAt?: string,
     updatedAt?: string
 }
 
@@ -22,4 +24,7 @@ export type Tables = {
     users?: User[]
 }
 
-type Roles<T> = ['admin', 'user']
+export interface Repository  {
+    read: () => void,
+    write: (model: any) => void
+}
