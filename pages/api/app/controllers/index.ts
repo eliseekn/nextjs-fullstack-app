@@ -1,3 +1,4 @@
 import PostController from './postController'
+import UserController from './userController'
 
-export { PostController }
+export {PostController, UserController}

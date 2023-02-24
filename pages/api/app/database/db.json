@@ -1,9 +1,12 @@
 {
   "posts": [
     {
-      "title": "Veniam optio earum",
-      "slug": "veniam-optio-earum",
-      "content": "Aut modi magnam fuga quia maxime dolores. Dolor laudantium dolorem et totam placeat. Nulla quia rerum fuga eaque quos quia. Dolorem sit corrupti commodi blanditiis sequi voluptatum."
+      "id": "3a42aac9-0a92-4995-bfaa-65ed50006056",
+      "title": "Aut modi magnam fuga",
+      "slug": "aut-modi-magnam-fuga",
+      "content": "Aut modi magnam fuga quia maxime dolores. Dolor laudantium dolorem et totam placeat. Nulla quia rerum fuga eaque quos quia. Dolorem sit corrupti commodi blanditiis sequi voluptatum.",
+      "publishedAt": "2023-02-24T22:32:12.797Z",
+      "editedAt": "2023-02-24T22:32:12.797Z"
     }
   ]
 }

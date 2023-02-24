@@ -1,15 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import {PostController} from "../app/controllers"
+import {UserController} from "../app/controllers"
 
 export default function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    const postController = new PostController(res)
+    const userController = new UserController(res)
 
     switch (req.method) {
-        case 'GET': return postController.getCollection()
-        case 'POST': return postController.store(req.body)
+        case 'GET': return userController.getCollection()
+        case 'POST': return userController.store(req.body)
         default:
             res.setHeader('Allow', ['GET', 'POST'])
             res.status(405).end(`Method ${req.method} Not Allowed`)

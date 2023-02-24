@@ -1,48 +1,48 @@
 import {NextApiResponse} from "next"
-import {Post} from "@/pages/api/app/interfaces"
-import {PostRepository} from "@/pages/api/app/repositories"
+import {User} from "@/pages/api/app/interfaces"
+import {UserRepository} from "@/pages/api/app/repositories"
 
-export default class PostController {
+export default class UserController {
     private res: NextApiResponse
-    private postRepository: PostRepository
+    private userRepository: UserRepository
 
     constructor(res: NextApiResponse) {
         this.res = res
-        this.postRepository = new PostRepository()
+        this.userRepository = new UserRepository()
     }
 
     public getCollection = () => {
-        this.postRepository
+        this.userRepository
             .findAll()
-            .then(posts => this.res.status(200).json(posts))
+            .then(users => this.res.status(200).json(users))
             .catch(() => this.res.status(500).json({status: 'error'}))
     }
 
     public getItem = (id: string) => {
-        this.postRepository
+        this.userRepository
             .find(id)
-            .then(post => {
-                if (!post) {
+            .then(user => {
+                if (!user) {
                     return this.res.status(404).json({status: 'error'})
                 }
 
-                this.res.status(200).json(post)
+                this.res.status(200).json(user)
             })
             .catch(() => this.res.status(500).json({status: 'error'}))
     }
 
-    public store = (post: Post) => {
-        this.postRepository
-            .create(post)
+    public store = (user: User) => {
+        this.userRepository
+            .create(user)
             .then(() => this.res.status(200).json({status: 'success'}))
             .catch(() => this.res.status(500).json({status: 'error'}))
     }
 
-    public update = (id: string, post: Post) => {
-        this.postRepository
-            .update(id, post)
-            .then(posts => {
-                if (!posts) {
+    public update = (id: string, user: User) => {
+        this.userRepository
+            .update(id, user)
+            .then(users => {
+                if (!users) {
                     return this.res.status(404).json({status: 'error'})
                 }
 
@@ -52,10 +52,10 @@ export default class PostController {
     }
 
     public destroy = (id: string) => {
-        this.postRepository
+        this.userRepository
             .destroy(id)
-            .then(posts => {
-                if (!posts) {
+            .then(users => {
+                if (!users) {
                     return this.res.status(404).json({status: 'error'})
                 }
 

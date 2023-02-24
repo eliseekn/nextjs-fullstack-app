@@ -9,47 +9,55 @@ export default class PostRepository implements Repository {
         this.postModel = new PostModel()
     }
 
-    read = (): Post[] => {
-        db.read()
+    read = async () => {
+        await db.read()
         return db.data?.posts
     }
 
-    write = (post: Post) => {
-        db.read()
+    write = async (post: Post) => {
+        await db.read()
         post = this.postModel.set(post)
         db.data?.posts?.push(post)
     }
 
     public find = async (id: string) => {
-        return await db.read().then(() => {
-            const posts: Post[] = this.read().filter(post => post.id === id)
-            return posts[0]
-        })
+        let posts: Post[] = await this.read()
+        posts = posts.filter(post => post.id === id)
+        return posts[0]
     }
 
-    findAll = async () => await db.read().then(() => this.read())
+    public findAll = async () => await this.read()
 
-    create = async (post: Post) => {
-        this.write(post)
-        return await db.write().then(() => this.read())
+    public create = async (post: Post) => {
+        await this.write(post)
+        return await db.write().then(async () => await this.read())
     }
 
-    public update = async (id: string, post: Post) => {
-        return await db.read().then(async () => {
-            let posts: Post[] = this.read().filter(post => post.id === id)
-            posts[0] = post
-            db.data = {posts: posts}
+    public update = async (id: string, newPost: Post) => {
+        let posts: Post[] = await this.read()
 
-            return db.write().then(() => this.read())
+        posts = posts.map(post => {
+            if (post.id === id) {
+                newPost.id = id
+                newPost.editedAt = new Date().toISOString()
+            }
+
+            return this.postModel.set(newPost)
         })
+
+        db.data = {posts: posts}
+        return db.write().then(async () => await this.read())
     }
 
     public destroy = async (id: string) => {
-        return await db.read().then(async () => {
-            let posts: Post[] = this.read().filter(post => post.id !== id)
-            db.data = {posts: posts}
+        let posts: Post[] = await this.read()
+        posts = posts.filter(post => post.id !== id)
 
-            return db.write().then(() => this.read())
-        })
+        if (posts.length === 0) {
+            return posts
+        }
+
+        db.data = {posts: posts}
+        return db.write().then(async () => await this.read())
     }
 }

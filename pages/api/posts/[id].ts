@@ -1,11 +1,9 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import {Post, User} from '../app/interfaces'
 import {PostController} from "../app/controllers"
 
 export default function handler(
     req: NextApiRequest,
-    res: NextApiResponse<any>
+    res: NextApiResponse
 ) {
     const postController = new PostController(res)
 

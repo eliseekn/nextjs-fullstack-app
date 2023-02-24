@@ -1,20 +1,18 @@
 export type Post = {
     id?: string,
     title: string,
-    slug: string,
+    slug?: string,
     content: string,
     publishedAt?: string,
     editedAt?: string
 }
-
-export type Roles<T> = ['admin', 'user']
 
 export type User = {
     id?: string,
     name: string,
     email: string,
     phone: string,
-    role: Roles<string>,
+    role: string,
     createdAt?: string,
     updatedAt?: string
 }
