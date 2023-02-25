@@ -33,6 +33,7 @@ export default class LoginController {
                             user: data
                         })
                     })
+                    .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
             })
             .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
     }

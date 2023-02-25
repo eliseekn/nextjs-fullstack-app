@@ -31,7 +31,7 @@ export default class UserModel {
         this.email = user.email
         this.phone = user.phone
         this.role = user.role
-        this.password = user.password ?? bcrypt.hashSync('password', 10)
+        this.password = user.password ? bcrypt.hashSync(user.password, 10) : bcrypt.hashSync('password', 10)
         this.createdAt = user.createdAt ?? new Date().toISOString()
         this.updatedAt = user.updatedAt
 

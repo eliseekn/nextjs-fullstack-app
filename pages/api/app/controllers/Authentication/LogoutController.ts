@@ -17,12 +17,13 @@ export default class LogoutController {
             .findOne(id)
             .then(data => {
                 if (!data) {
-                    return this.res.status(400).json({status: 'error'})
+                    return this.res.status(404).json({status: 'error'})
                 }
 
                 return this.tokenRepository
                     .destroy(id)
                     .then(() => this.res.status(200).json({status: 'success'}))
+                    .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
             })
             .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
     }

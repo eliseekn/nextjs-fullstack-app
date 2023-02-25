@@ -38,7 +38,7 @@ export default class TokenRepository implements Repository {
 
     findAllBy = async (key: string, value: string) => Promise
 
-    create = async (userId: string) => await this.add({userId: userId}).then(() => this.findOne(userId))
+    create = async (userId: string) => await this.add({userId: userId}).then(async () => await this.findOneBy("userId", userId))
 
     update = async (id: string, newToken: Token) => Promise
 

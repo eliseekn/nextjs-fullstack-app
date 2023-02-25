@@ -13,26 +13,9 @@
   "tokens": [
     {
       "userId": "1cb468dd-0f6e-4551-9834-337de6adb6f0",
-      "value": "b4817af0-6a8d-48af-a189-6338863d1ca8"
+      "value": "a9c6f78f-eb74-4230-9c99-808b6c1f51fd"
     }
   ],
-  "posts": [
-    {
-      "id": "0211060a-5f55-4630-8e56-22b582f32340",
-      "userId": "1cb468dd-0f6e-4551-9834-337de6adb6f0",
-      "title": "Corrupti praesentium ratione",
-      "slug": "corrupti-praesentium-ratione",
-      "content": "Corrupti praesentium ratione assumenda impedit eius est sed voluptas. Laudantium optio ut saepe omnis sit accusamus placeat. Magni impedit molestiae dolores.",
-      "publishedAt": "2023-02-25T10:23:34.797Z"
-    }
-  ],
-  "comments": [
-    {
-      "id": "b4cb7147-cdef-4a56-a321-8f5168bede47",
-      "postId": "0211060a-5f55-4630-8e56-22b582f32340",
-      "userId": "1cb468dd-0f6e-4551-9834-337de6adb6f0",
-      "message": "Corrupti praesentium ratione assumenda impedit eius est sed voluptas.",
-      "publishedAt": "2023-02-25T10:25:48.988Z"
-    }
-  ]
+  "posts": [],
+  "comments": []
 }
