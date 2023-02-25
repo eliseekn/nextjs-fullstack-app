@@ -14,19 +14,19 @@ export default class PostController {
     public getCollection = () => {
         this.postRepository
             .findAll()
-            .then(posts => this.res.status(200).json(posts))
+            .then(data => this.res.status(200).json(data))
             .catch(() => this.res.status(500).json({status: 'error'}))
     }
 
     public getItem = (id: string) => {
         this.postRepository
             .find(id)
-            .then(post => {
-                if (!post) {
+            .then(data => {
+                if (!data) {
                     return this.res.status(404).json({status: 'error'})
                 }
 
-                this.res.status(200).json(post)
+                this.res.status(200).json(data)
             })
             .catch(() => this.res.status(500).json({status: 'error'}))
     }
@@ -41,8 +41,8 @@ export default class PostController {
     public update = (id: string, post: Post) => {
         this.postRepository
             .update(id, post)
-            .then(posts => {
-                if (!posts) {
+            .then(data => {
+                if (!data) {
                     return this.res.status(404).json({status: 'error'})
                 }
 
@@ -54,8 +54,8 @@ export default class PostController {
     public destroy = (id: string) => {
         this.postRepository
             .destroy(id)
-            .then(posts => {
-                if (!posts) {
+            .then(data => {
+                if (!data) {
                     return this.res.status(404).json({status: 'error'})
                 }
 

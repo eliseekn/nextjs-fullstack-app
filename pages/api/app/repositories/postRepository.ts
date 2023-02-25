@@ -11,13 +11,19 @@ export default class PostRepository implements Repository {
 
     read = async () => {
         await db.read()
-        return db.data?.posts
+        return db.data?.posts ?? []
     }
 
-    write = async (post: Post) => {
-        await db.read()
-        post = this.postModel.set(post)
-        db.data?.posts?.push(post)
+    write = async (data: {}) => {
+        db.data = data
+        return await db.write()
+    }
+
+    add = async (post: Post) => {
+        let posts = await this.read()
+        posts.push(this.postModel.set(post))
+
+        return await this.write({posts: posts})
     }
 
     public find = async (id: string) => {
@@ -28,10 +34,7 @@ export default class PostRepository implements Repository {
 
     public findAll = async () => await this.read()
 
-    public create = async (post: Post) => {
-        await this.write(post)
-        return await db.write().then(async () => await this.read())
-    }
+    public create = async (post: Post) => await this.add(post).then(async () => await this.read())
 
     public update = async (id: string, newPost: Post) => {
         let posts: Post[] = await this.read()
@@ -45,19 +48,13 @@ export default class PostRepository implements Repository {
             return this.postModel.set(newPost)
         })
 
-        db.data = {posts: posts}
-        return db.write().then(async () => await this.read())
+        return await this.write({posts: posts}).then(async () => await this.read())
     }
 
     public destroy = async (id: string) => {
         let posts: Post[] = await this.read()
         posts = posts.filter(post => post.id !== id)
 
-        if (posts.length === 0) {
-            return posts
-        }
-
-        db.data = {posts: posts}
-        return db.write().then(async () => await this.read())
+        return await this.write({posts: posts}).then(async () => await this.read())
     }
 }

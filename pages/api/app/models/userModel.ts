@@ -1,4 +1,4 @@
-import {User} from '../interfaces'
+import {User, UserRole} from '../interfaces'
 import {randomUUID} from 'crypto'
 
 export default class UserModel {
@@ -6,7 +6,7 @@ export default class UserModel {
     private name?: string
     private email?: string
     private phone?: string
-    private role?: string
+    private role?: UserRole
     private createdAt?: string
     private updatedAt?: string
 
@@ -16,7 +16,7 @@ export default class UserModel {
             name: this.name ?? '',
             email: this.email ?? '',
             phone: this.phone ?? '',
-            role: this.role ?? '',
+            role: this.role ?? 'user',
             createdAt: this.createdAt,
             updatedAt: this.updatedAt
         }
@@ -27,6 +27,7 @@ export default class UserModel {
         this.name = user.name
         this.email = user.email
         this.phone = user.phone
+        this.role = user.role
         this.createdAt = user.createdAt ?? new Date().toISOString()
         this.updatedAt = user.updatedAt
 

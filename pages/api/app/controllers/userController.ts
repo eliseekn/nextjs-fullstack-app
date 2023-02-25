@@ -14,19 +14,19 @@ export default class UserController {
     public getCollection = () => {
         this.userRepository
             .findAll()
-            .then(users => this.res.status(200).json(users))
+            .then(data => this.res.status(200).json(data))
             .catch(() => this.res.status(500).json({status: 'error'}))
     }
 
     public getItem = (id: string) => {
         this.userRepository
             .find(id)
-            .then(user => {
-                if (!user) {
+            .then(data => {
+                if (!data) {
                     return this.res.status(404).json({status: 'error'})
                 }
 
-                this.res.status(200).json(user)
+                this.res.status(200).json(data)
             })
             .catch(() => this.res.status(500).json({status: 'error'}))
     }
@@ -41,8 +41,8 @@ export default class UserController {
     public update = (id: string, user: User) => {
         this.userRepository
             .update(id, user)
-            .then(users => {
-                if (!users) {
+            .then(data => {
+                if (!data) {
                     return this.res.status(404).json({status: 'error'})
                 }
 
@@ -54,8 +54,8 @@ export default class UserController {
     public destroy = (id: string) => {
         this.userRepository
             .destroy(id)
-            .then(users => {
-                if (!users) {
+            .then(data => {
+                if (!data) {
                     return this.res.status(404).json({status: 'error'})
                 }
 

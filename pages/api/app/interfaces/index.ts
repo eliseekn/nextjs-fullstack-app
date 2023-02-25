@@ -7,12 +7,14 @@ export type Post = {
     editedAt?: string
 }
 
+export type UserRole = 'admin' | 'user'
+
 export type User = {
     id?: string,
     name: string,
     email: string,
     phone: string,
-    role: string,
+    role: UserRole,
     createdAt?: string,
     updatedAt?: string
 }
@@ -24,5 +26,6 @@ export type Tables = {
 
 export interface Repository  {
     read: () => void,
-    write: (model: any) => void
+    write: (data: any) => void
+    add: (data: any) => void
 }

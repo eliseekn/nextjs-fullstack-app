@@ -11,13 +11,19 @@ export default class UserRepository implements Repository {
 
     read = async () => {
         await db.read()
-        return db.data?.users
+        return db.data?.users ?? []
     }
 
-    write = async (user: User) => {
-        await db.read()
-        user = this.userModel.set(user)
-        db.data?.users?.push(user)
+    write = async (data: {}) => {
+        db.data = data
+        return await db.write()
+    }
+
+    add = async (user: User) => {
+        let users = await this.read()
+        users.push(this.userModel.set(user))
+
+        return await this.write({users: users})
     }
 
     public find = async (id: string) => {
@@ -28,10 +34,7 @@ export default class UserRepository implements Repository {
 
     public findAll = async () => await this.read()
 
-    public create = async (user: User) => {
-        await this.write(user)
-        return await db.write().then(async () => await this.read())
-    }
+    public create = async (user: User) => await this.add(user).then(async () => await this.read())
 
     public update = async (id: string, newUser: User) => {
         let users: User[] = await this.read()
@@ -45,19 +48,13 @@ export default class UserRepository implements Repository {
             return this.userModel.set(newUser)
         })
 
-        db.data = {users: users}
-        return db.write().then(async () => await this.read())
+        return await this.write({users: users}).then(async () => await this.read())
     }
 
     public destroy = async (id: string) => {
         let users: User[] = await this.read()
         users = users.filter(user => user.id !== id)
 
-        if (users.length === 0) {
-            return users
-        }
-
-        db.data = {users: users}
-        return db.write().then(async () => await this.read())
+        return await this.write({users: users}).then(async () => await this.read())
     }
 }
