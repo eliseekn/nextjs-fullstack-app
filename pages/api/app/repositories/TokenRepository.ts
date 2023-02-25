@@ -1,5 +1,5 @@
 import db from '../database'
-import {Token, Repository, User, Post} from '../interfaces'
+import {Token, Repository} from '../interfaces'
 import {TokenModel} from '../models'
 
 export default class TokenRepository implements Repository {

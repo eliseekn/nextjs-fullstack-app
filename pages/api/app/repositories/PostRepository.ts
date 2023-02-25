@@ -1,5 +1,5 @@
 import db from '../database'
-import {Post, Repository, User} from '../interfaces'
+import {Post, Repository} from '../interfaces'
 import {PostModel} from '../models'
 
 export default class PostRepository implements Repository {
