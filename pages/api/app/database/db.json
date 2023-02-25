@@ -1,31 +1,5 @@
 {
   "tokens": [],
-  "users": [
-    {
-      "id": "1cb468dd-0f6e-4551-9834-337de6adb6f0",
-      "name": "John Doe",
-      "email": "john@doe.com",
-      "phone": "0000000001",
-      "role": "user",
-      "password": "$2b$10$RHyWqNuoXwZh05HBX2mRhu8AS6gOy/gvLXbemZ07K.SpLQaCvbzm6",
-      "createdAt": "2023-02-25T05:31:23.298Z"
-    }
-  ],
-  "posts": [
-    {
-      "id": "c7ce7950-e98a-4261-ba33-fa06de9a9f1a",
-      "title": "Corrupti praesentium ratione",
-      "slug": "corrupti-praesentium-ratione",
-      "content": "Corrupti praesentium ratione assumenda impedit eius est sed voluptas. Laudantium optio ut saepe omnis sit accusamus placeat. Magni impedit molestiae dolores.",
-      "publishedAt": "2023-02-25T05:33:18.108Z"
-    },
-    {
-      "id": "2eeeb6bf-6b75-436f-946a-52d68357cfbb",
-      "userId": "1cb468dd-0f6e-4551-9834-337de6adb6f0",
-      "title": "Corrupti praesentium ratione",
-      "slug": "corrupti-praesentium-ratione",
-      "content": "Corrupti praesentium ratione assumenda impedit eius est sed voluptas. Laudantium optio ut saepe omnis sit accusamus placeat. Magni impedit molestiae dolores.",
-      "publishedAt": "2023-02-25T05:39:24.889Z"
-    }
-  ]
+  "users": [],
+  "posts": []
 }

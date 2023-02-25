@@ -1,5 +1,5 @@
 import db from '../database'
-import {Token, Repository, User} from '../interfaces'
+import {Token, Repository, User, Post} from '../interfaces'
 import {TokenModel} from '../models'
 
 export default class TokenRepository implements Repository {
@@ -32,7 +32,11 @@ export default class TokenRepository implements Repository {
         return tokens[0]
     }
 
-    findBy = async (key: string, value: string) => Promise
+    findBy = async (key: string, value: string) => {
+        let tokens: Token[] = await this.read()
+        tokens = tokens.filter(token => token[key as keyof Token] === value)
+        return tokens[0]
+    }
 
     findAll = async () => Promise
 
