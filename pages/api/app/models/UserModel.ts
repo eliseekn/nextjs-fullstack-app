@@ -1,5 +1,6 @@
 import {User, UserRole} from '../interfaces'
 import {randomUUID} from 'crypto'
+const bcrypt = require('bcrypt')
 
 export default class UserModel {
     private id?: string
@@ -7,6 +8,7 @@ export default class UserModel {
     private email?: string
     private phone?: string
     private role?: UserRole
+    private password?: string
     private createdAt?: string
     private updatedAt?: string
 
@@ -17,6 +19,7 @@ export default class UserModel {
             email: this.email ?? '',
             phone: this.phone ?? '',
             role: this.role ?? 'user',
+            password: this.password,
             createdAt: this.createdAt,
             updatedAt: this.updatedAt
         }
@@ -28,6 +31,7 @@ export default class UserModel {
         this.email = user.email
         this.phone = user.phone
         this.role = user.role
+        this.password = user.password ?? bcrypt.hashSync('password', 10)
         this.createdAt = user.createdAt ?? new Date().toISOString()
         this.updatedAt = user.updatedAt
 

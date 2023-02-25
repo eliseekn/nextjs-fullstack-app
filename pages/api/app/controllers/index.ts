@@ -1,4 +1,6 @@
-import PostController from './postController'
-import UserController from './userController'
+import PostController from './PostController'
+import UserController from './UserController'
+import LoginController from './Authentication/LoginController'
+import LogoutController from './Authentication/LogoutController'
 
-export {PostController, UserController}
+export {PostController, UserController, LoginController, LogoutController}

@@ -1,5 +1,5 @@
 import db from '../database'
-import {Post, Repository} from '../interfaces'
+import {Post, Repository, User} from '../interfaces'
 import {PostModel} from '../models'
 
 export default class PostRepository implements Repository {
@@ -14,8 +14,8 @@ export default class PostRepository implements Repository {
         return db.data?.posts ?? []
     }
 
-    write = async (data: {}) => {
-        db.data = data
+    write = async (data: {posts: Post[]}) => {
+        Object.assign(db.data as Object, {posts: data.posts})
         return await db.write()
     }
 
@@ -26,17 +26,23 @@ export default class PostRepository implements Repository {
         return await this.write({posts: posts})
     }
 
-    public find = async (id: string) => {
+    find = async (id: string) => {
         let posts: Post[] = await this.read()
         posts = posts.filter(post => post.id === id)
         return posts[0]
     }
 
-    public findAll = async () => await this.read()
+    findBy = async (key: string, value: string) => {
+        let posts: Post[] = await this.read()
+        posts = posts.filter(post => post[key as keyof Post] === value)
+        return posts[0]
+    }
 
-    public create = async (post: Post) => await this.add(post).then(async () => await this.read())
+    findAll = async () => await this.read()
 
-    public update = async (id: string, newPost: Post) => {
+    create = async (post: Post) => await this.add(post).then(async () => await this.read())
+
+    update = async (id: string, newPost: Post) => {
         let posts: Post[] = await this.read()
 
         posts = posts.map(post => {
@@ -51,7 +57,7 @@ export default class PostRepository implements Repository {
         return await this.write({posts: posts}).then(async () => await this.read())
     }
 
-    public destroy = async (id: string) => {
+    destroy = async (id: string) => {
         let posts: Post[] = await this.read()
         posts = posts.filter(post => post.id !== id)
 

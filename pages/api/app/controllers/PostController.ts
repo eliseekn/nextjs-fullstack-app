@@ -15,7 +15,7 @@ export default class PostController {
         this.postRepository
             .findAll()
             .then(data => this.res.status(200).json(data))
-            .catch(() => this.res.status(500).json({status: 'error'}))
+            .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
     }
 
     public getItem = (id: string) => {
@@ -28,14 +28,14 @@ export default class PostController {
 
                 this.res.status(200).json(data)
             })
-            .catch(() => this.res.status(500).json({status: 'error'}))
+            .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
     }
 
     public store = (post: Post) => {
         this.postRepository
             .create(post)
             .then(() => this.res.status(200).json({status: 'success'}))
-            .catch(() => this.res.status(500).json({status: 'error'}))
+            .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
     }
 
     public update = (id: string, post: Post) => {
@@ -48,7 +48,7 @@ export default class PostController {
 
                 this.res.status(200).json({status: 'success'})
             })
-            .catch(() => this.res.status(500).json({status: 'error'}))
+            .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
     }
 
     public destroy = (id: string) => {
@@ -61,6 +61,6 @@ export default class PostController {
 
                 this.res.status(200).json({status: 'success'})
             })
-            .catch(() => this.res.status(500).json({status: 'error'}))
+            .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
     }
 }

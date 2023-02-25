@@ -14,8 +14,8 @@ export default class UserRepository implements Repository {
         return db.data?.users ?? []
     }
 
-    write = async (data: {}) => {
-        db.data = data
+    write = async (data: {users: User[]}) => {
+        Object.assign(db.data as Object, {users: data.users})
         return await db.write()
     }
 
@@ -26,17 +26,23 @@ export default class UserRepository implements Repository {
         return await this.write({users: users})
     }
 
-    public find = async (id: string) => {
+    find = async (id: string) => {
         let users: User[] = await this.read()
         users = users.filter(user => user.id === id)
         return users[0]
     }
 
-    public findAll = async () => await this.read()
+    findBy = async (key: string, value: string) => {
+        let users: User[] = await this.read()
+        users = users.filter(user => user[key as keyof User] === value)
+        return users[0]
+    }
 
-    public create = async (user: User) => await this.add(user).then(async () => await this.read())
+    findAll = async () => await this.read()
 
-    public update = async (id: string, newUser: User) => {
+    create = async (user: User) => await this.add(user).then(async () => await this.read())
+
+    update = async (id: string, newUser: User) => {
         let users: User[] = await this.read()
 
         users = users.map(user => {
@@ -51,7 +57,7 @@ export default class UserRepository implements Repository {
         return await this.write({users: users}).then(async () => await this.read())
     }
 
-    public destroy = async (id: string) => {
+    destroy = async (id: string) => {
         let users: User[] = await this.read()
         users = users.filter(user => user.id !== id)
 

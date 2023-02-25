@@ -4,6 +4,7 @@ import {slugify} from "@/pages/api/app/helpers";
 
 export default class PostModel {
     private id?: string
+    private userId?: string
     private title?: string
     private slug?: string
     private content?: string
@@ -13,6 +14,7 @@ export default class PostModel {
     public get = (): Post => {
         return {
             id: this.id,
+            userId: this.userId ?? '',
             title: this.title ?? '',
             slug: this.slug,
             content: this.content ?? '',
@@ -23,6 +25,7 @@ export default class PostModel {
     
     public set = (post: Post): Post => {
         this.id = post.id ?? randomUUID()
+        this.userId = post.userId
         this.title = post.title
         this.slug = slugify(post.title)
         this.content = post.content

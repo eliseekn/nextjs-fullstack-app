@@ -1,4 +1,5 @@
-import PostModel from "./postModel"
-import UserModel from "./userModel"
+import PostModel from "./PostModel"
+import UserModel from "./UserModel"
+import TokenModel from "./TokenModel"
 
-export {PostModel, UserModel}
+export {PostModel, UserModel, TokenModel}
