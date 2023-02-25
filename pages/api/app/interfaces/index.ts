@@ -25,7 +25,7 @@ export type Tables = {
 }
 
 export interface Repository  {
-    read: () => void,
-    write: (data: any) => void
-    add: (data: any) => void
+    read(): Promise<any>
+    write(data: any): Promise<void>
+    add(data: any): Promise<void>
 }
