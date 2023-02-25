@@ -26,19 +26,20 @@ export default class PostRepository implements Repository {
         return await this.write({posts: posts})
     }
 
-    find = async (id: string) => {
-        let posts: Post[] = await this.read()
-        posts = posts.filter(post => post.id === id)
-        return posts[0]
-    }
+    findOne = async (id: string) => await this.findOneBy('id', id)
 
-    findBy = async (key: string, value: string) => {
+    findOneBy = async (key: string, value: string) => {
         let posts: Post[] = await this.read()
         posts = posts.filter(post => post[key as keyof Post] === value)
         return posts[0]
     }
 
     findAll = async () => await this.read()
+
+    findAllBy = async (key: string, value: string) => {
+        let posts: Post[] = await this.read()
+        return posts.filter(post => post[key as keyof Post] === value)
+    }
 
     create = async (post: Post) => await this.add(post).then(async () => await this.read())
 

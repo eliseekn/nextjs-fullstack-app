@@ -20,7 +20,7 @@ export default class PostController {
 
     public getItem = (id: string) => {
         this.postRepository
-            .find(id)
+            .findOne(id)
             .then(data => {
                 if (!data) {
                     return this.res.status(404).json({status: 'error'})

@@ -15,7 +15,7 @@ export default class LoginController {
 
     public authenticate = ({email, password}: {email: string, password: string}) => {
         this.userRepository
-            .findBy('email', email)
+            .findOneBy('email', email)
             .then(data => {
                 if (!data) {
                     return this.res.status(400).json({status: 'error'})

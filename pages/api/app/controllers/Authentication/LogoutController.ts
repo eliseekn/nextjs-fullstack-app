@@ -14,7 +14,7 @@ export default class LogoutController {
 
     public logout = (id: string) => {
         this.userRepository
-            .find(id)
+            .findOne(id)
             .then(data => {
                 if (!data) {
                     return this.res.status(400).json({status: 'error'})

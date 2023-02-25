@@ -8,8 +8,8 @@ export default async function handler(
     res: NextApiResponse
 ) {
     await middleware(req, res, cors)
-    await middleware(req, res, auth)
-    await middleware(req, res, admin)
+    await auth(req, res)
+    await admin(req, res)
 
     const userController = new UserController(res)
 

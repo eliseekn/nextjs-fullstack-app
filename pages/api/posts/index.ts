@@ -14,8 +14,8 @@ export default async function handler(
     switch (req.method) {
         case 'GET': return postController.getCollection()
         case 'POST': {
-            await middleware(req, res, auth)
-            await middleware(req, res, admin)
+            await auth(req, res)
+            await admin(req, res)
 
             return postController.store(req.body)
         }

@@ -1,7 +1,7 @@
 import type {NextApiRequest, NextApiResponse} from 'next'
 import {CommentController} from "../app/controllers"
 import {middleware} from "@/pages/api/app/helpers"
-import {cors, auth} from "@/pages/api/app/middlewares"
+import {cors, auth, admin} from "@/pages/api/app/middlewares"
 
 export default async function handler(
     req: NextApiRequest,
@@ -12,9 +12,14 @@ export default async function handler(
     const commentController = new CommentController(res)
 
     switch (req.method) {
-        case 'GET': return commentController.getCollection()
+        case 'GET': {
+            await auth(req, res)
+            await admin(req, res)
+
+            return commentController.getCollection()
+        }
         case 'POST': {
-            await middleware(req, res, auth)
+            await auth(req, res)
             return commentController.store(req.body)
         }
         default:

@@ -26,19 +26,20 @@ export default class CommentRepository implements Repository {
         return await this.write({comments: comments})
     }
 
-    find = async (id: string) => {
-        let comments: Comment[] = await this.read()
-        comments = comments.filter(comment => comment.id === id)
-        return comments[0]
-    }
+    findOne = async (id: string) => await this.findOneBy('id', id)
 
-    findBy = async (key: string, value: string) => {
+    findOneBy = async (key: string, value: string) => {
         let comments: Comment[] = await this.read()
         comments = comments.filter(comment => comment[key as keyof Comment] === value)
         return comments[0]
     }
 
     findAll = async () => await this.read()
+
+    findAllBy = async (key: string, value: string) => {
+        let comments: Comment[] = await this.read()
+        return comments.filter(comment => comment[key as keyof Comment] === value)
+    }
 
     create = async (comment: Comment) => await this.add(comment).then(async () => await this.read())
 

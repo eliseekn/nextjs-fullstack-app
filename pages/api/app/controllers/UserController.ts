@@ -20,7 +20,7 @@ export default class UserController {
 
     public getItem = (id: string) => {
         this.userRepository
-            .find(id)
+            .findOne(id)
             .then(data => {
                 if (!data) {
                     return this.res.status(404).json({status: 'error'})

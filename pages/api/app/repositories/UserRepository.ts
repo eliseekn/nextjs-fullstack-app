@@ -26,19 +26,20 @@ export default class UserRepository implements Repository {
         return await this.write({users: users})
     }
 
-    find = async (id: string) => {
-        let users: User[] = await this.read()
-        users = users.filter(user => user.id === id)
-        return users[0]
-    }
+    findOne = async (id: string) => await this.findOneBy('id', id)
 
-    findBy = async (key: string, value: string) => {
+    findOneBy = async (key: string, value: string) => {
         let users: User[] = await this.read()
         users = users.filter(user => user[key as keyof User] === value)
         return users[0]
     }
 
     findAll = async () => await this.read()
+
+    findAllBy = async (key: string, value: string) => {
+        let users: User[] = await this.read()
+        return users.filter(user => user[key as keyof User] === value)
+    }
 
     create = async (user: User) => await this.add(user).then(async () => await this.read())
 

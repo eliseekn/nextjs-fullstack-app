@@ -26,13 +26,9 @@ export default class TokenRepository implements Repository {
         return await this.write({tokens: tokens})
     }
 
-    find = async (userId: string) => {
-        let tokens: Token[] = await this.read()
-        tokens = tokens.filter(token => token.userId === userId)
-        return tokens[0]
-    }
+    findOne = async (value: string) => await this.findOneBy('value', value)
 
-    findBy = async (key: string, value: string) => {
+    findOneBy = async (key: string, value: string) => {
         let tokens: Token[] = await this.read()
         tokens = tokens.filter(token => token[key as keyof Token] === value)
         return tokens[0]
@@ -40,7 +36,9 @@ export default class TokenRepository implements Repository {
 
     findAll = async () => Promise
 
-    create = async (userId: string) => await this.add({userId: userId}).then(() => this.find(userId))
+    findAllBy = async (key: string, value: string) => Promise
+
+    create = async (userId: string) => await this.add({userId: userId}).then(() => this.findOne(userId))
 
     update = async (id: string, newToken: Token) => Promise
 

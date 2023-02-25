@@ -15,8 +15,6 @@ export default async function handler(
         return loginController.authenticate(req.body)
     }
 
-    req.headers.authorization
-
     res.setHeader('Allow', ['POST'])
     res.status(405).json({status: 'error'})
 }

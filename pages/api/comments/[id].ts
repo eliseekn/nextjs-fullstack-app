@@ -14,11 +14,11 @@ export default async function handler(
     switch (req.method) {
         case 'GET': return commentController.getItem(req.query.id as string)
         case 'PATCH': {
-            await middleware(req, res, auth)
+            await auth(req, res)
             return commentController.update(req.query.id as string, req.body)
         }
         case 'DELETE': {
-            await middleware(req, res, auth)
+            await auth(req, res)
             return commentController.destroy(req.query.id as string)
         }
         default:
