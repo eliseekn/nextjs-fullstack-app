@@ -48,11 +48,11 @@ export default class PostRepository implements Repository {
 
         posts = posts.map(post => {
             if (post.id === id) {
-                newPost.id = id
-                newPost.editedAt = new Date().toISOString()
+                post.editedAt = new Date().toISOString()
+                return this.postModel.set({...post, ...newPost})
             }
 
-            return this.postModel.set(newPost)
+            return post
         })
 
         return await this.write({posts: posts}).then(async () => await this.read())

@@ -10,71 +10,32 @@
       "createdAt": "2023-02-25T07:45:49.457Z"
     },
     {
-      "id": "c0363e63-9cad-4cc9-9316-71e65ab278eb",
+      "id": "5305bf7e-615e-40fb-8149-48e77c6367a9",
       "name": "Jeanne Doe",
       "email": "jeanne@doe.com",
       "phone": "0000000001",
       "role": "user",
-      "password": "$2b$10$p8hS9TU9TBGcJ3pq9ABx0eHxTXQFRmNKZuvGko0qPeoFQ4Vv.t0X6",
-      "createdAt": "2023-02-25T23:47:28.695Z"
+      "password": "$2b$10$qhcqCe41iuGk.M1Na4KxuePcPy72gDkZByMJBuKneQ/Mr6wzDWr92",
+      "createdAt": "2023-02-26T11:44:44.843Z"
     },
     {
-      "id": "3a18e6f7-14c6-4f3c-97f0-18391406def2",
+      "id": "5f15b7f1-88e8-4b9c-8589-ec686802d308",
       "name": "Jeanne Doe",
       "email": "jeanne@doe.com",
       "phone": "0000000001",
       "role": "user",
-      "password": "$2b$10$j7Q2TguoaK82LovkNXWqMO0lZyOQF3daG31RkqH9BeCC46xSRxAGi",
-      "createdAt": "2023-02-25T23:47:28.859Z"
-    },
-    {
-      "id": "eee2d7f4-f77b-44ce-a17c-308b7c37f78f",
-      "name": "Jeanne Doe",
-      "email": "jeanne@doe.com",
-      "phone": "0000000001",
-      "role": "user",
-      "password": "$2b$10$K4cU4P8sKERMbfQ8hecN0u07AVKk5P25jffKHVivdoEqkF09XD4Dq",
-      "createdAt": "2023-02-25T23:47:29.035Z"
-    },
-    {
-      "id": "85f0fd5e-afb1-4c58-ae15-7555b7f935c8",
-      "name": "Jeanne Doe",
-      "email": "jeanne@doe.com",
-      "phone": "0000000001",
-      "role": "user",
-      "password": "$2b$10$bo/BZOgOug89YH2bgZym8OQI5NNhHrEAh9ip/TB0QtRKJL/icI3Vu",
-      "createdAt": "2023-02-25T23:47:29.252Z"
-    },
-    {
-      "id": "fc6a86df-19b0-4c7f-8e7d-fda922b7213e",
-      "name": "Jeanne Doe",
-      "email": "jeanne@doe.com",
-      "phone": "0000000001",
-      "role": "user",
-      "password": "$2b$10$KrMz70YA10XROxBqlEZBfOlmioDQ5eDuHOAF2p1Vqt5RRTOjptZ3m",
-      "createdAt": "2023-02-25T23:47:29.426Z"
+      "password": "$2b$10$Yrp7c9eotg2/pLGNIVH7KeeKD5sYMZxcU9TEBqJTBBW82K0WkUw9K",
+      "createdAt": "2023-02-26T11:48:43.513Z"
     }
   ],
   "tokens": [
     {
       "userId": "1cb468dd-0f6e-4551-984-337de6adb6f0",
-      "value": "ac517d07-84ae-443f-b469-eb64bdec3c9d"
+      "value": "b55b7806-e182-44fc-bff8-14bb2e4e3aa5"
     },
     {
       "userId": "1cb468dd-0f6e-4551-984-337de6adb6f0",
-      "value": "4346a387-d694-4bdb-b0dd-76300e8fb25b"
-    },
-    {
-      "userId": "1cb468dd-0f6e-4551-984-337de6adb6f0",
-      "value": "36565416-d90e-43af-9abe-28178ba1e1a0"
-    },
-    {
-      "userId": "1cb468dd-0f6e-4551-984-337de6adb6f0",
-      "value": "2cccad84-4bdd-443c-8513-edc3cd8066b5"
-    },
-    {
-      "userId": "1cb468dd-0f6e-4551-984-337de6adb6f0",
-      "value": "501e792f-78a9-4fa0-95e5-6d808a85ccba"
+      "value": "5a51631f-aadb-4b60-af85-d909100d4a14"
     }
   ],
   "posts": [],

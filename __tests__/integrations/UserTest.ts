@@ -8,8 +8,8 @@ const req = supertest.agent("http://localhost:3000/api")
 test('can store user', async () => {
     const authRes = await req.post('/login')
         .send({
-            email: "john@doe.com",
-            password: "password",
+            "email": "john@doe.com",
+            "password": "password",
         })
 
     await req.post('/users')
@@ -26,8 +26,8 @@ test('can store user', async () => {
 test('can update user', async () => {
     const authRes = await req.post('/login')
         .send({
-            email: "john@doe.com",
-            password: "password",
+            "email": "john@doe.com",
+            "password": "password",
         })
 
     await req.post('/users')
@@ -38,24 +38,23 @@ test('can update user', async () => {
             "phone": "0000000001"
         })
 
-    await req.get('/users')
-        .then(async res => {
-            await req.patch('/users/' + res.body[1].id)
-                .set({Authorization: 'Bearer ' + authRes.body.token})
-                .send({
-                    "name": "Sarah Doe",
-                    "email": "sarah@doe.com",
-                })
-                .expect(200)
-                .then(res => expect(res.body.status).toBe("success"))
-        })
+    await req.get('/users').then(async res => {
+        await req.patch('/users/' + res.body[1].id)
+            .set({Authorization: 'Bearer ' + authRes.body.token})
+            .send({
+                "name": "Sarah Doe",
+                "email": "sarah@doe.com",
+            })
+            .expect(200)
+            .then(res => expect(res.body.status).toBe("success"))
+    })
 })
 
 test('can get posts collection', async () => {
     const authRes = await req.post('/login')
         .send({
-            email: "john@doe.com",
-            password: "password",
+            "email": "john@doe.com",
+            "password": "password",
         })
 
     await req.post('/users')
@@ -81,8 +80,8 @@ test('can get posts collection', async () => {
 test('can get post item', async () => {
     const authRes = await req.post('/login')
         .send({
-            email: "john@doe.com",
-            password: "password",
+            "email": "john@doe.com",
+            "password": "password",
         })
 
     await req.post('/users')
@@ -110,8 +109,8 @@ test('can get post item', async () => {
 test('can delete user', async () => {
     const authRes = await req.post('/login')
         .send({
-            email: "john@doe.com",
-            password: "password",
+            "email": "john@doe.com",
+            "password": "password",
         })
 
     await req.post('/users')

@@ -7,8 +7,8 @@ const req = supertest.agent("http://localhost:3000/api")
 test('can store post', async () => {
     const authRes = await req.post('/login')
         .send({
-            email: "john@doe.com",
-            password: "password",
+            "email": "john@doe.com",
+            "password": "password",
         })
 
     await req.post('/posts')
@@ -25,8 +25,8 @@ test('can store post', async () => {
 test('can update post', async () => {
     const authRes = await req.post('/login')
         .send({
-            email: "john@doe.com",
-            password: "password",
+            "email": "john@doe.com",
+            "password": "password",
         })
 
     await req.post('/posts')
@@ -53,8 +53,8 @@ test('can update post', async () => {
 test('can get posts collection', async () => {
     const authRes = await req.post('/login')
         .send({
-            email: "john@doe.com",
-            password: "password",
+            "email": "john@doe.com",
+            "password": "password",
         })
 
     await req.post('/posts')
@@ -81,8 +81,8 @@ test('can get posts collection', async () => {
 test('can get post item', async () => {
     const authRes = await req.post('/login')
         .send({
-            email: "john@doe.com",
-            password: "password",
+            "email": "john@doe.com",
+            "password": "password",
         })
 
     await req.post('/posts')
@@ -111,8 +111,8 @@ test('can get post item', async () => {
 test('can delete post', async () => {
     const authRes = await req.post('/login')
         .send({
-            email: "john@doe.com",
-            password: "password",
+            "email": "john@doe.com",
+            "password": "password",
         })
 
     await req.post('/posts')

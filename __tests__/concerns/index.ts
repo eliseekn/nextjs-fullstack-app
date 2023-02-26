@@ -1,5 +1,5 @@
-import fs from "fs";
-import path from "path";
+import fs from "fs"
+import path from "path"
 
 export const refreshDatabase = () => {
     return fs.writeFileSync(path.join(__dirname, "../../pages/api/app/database", "db.json"), JSON.stringify({
