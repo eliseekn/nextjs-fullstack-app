@@ -11,55 +11,55 @@ export default class PostController {
         this.postRepository = new PostRepository()
     }
 
-    public getCollection = () => {
-        this.postRepository
+    public getCollection = async () => {
+        return await this.postRepository
             .findAll()
-            .then(data => this.res.status(200).json(data))
+            .then((posts: Post[]) => this.res.status(200).json(posts))
             .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
     }
 
-    public getItem = (id: string) => {
-        this.postRepository
+    public getItem = async (id: string) => {
+        return await this.postRepository
             .findOne(id)
-            .then(data => {
-                if (!data) {
+            .then((post: Post) => {
+                if (!post) {
                     return this.res.status(404).json({status: 'error'})
                 }
 
-                this.res.status(200).json(data)
+                return this.res.status(200).json(post)
             })
             .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
     }
 
-    public store = (post: Post) => {
-        this.postRepository
+    public store = async (post: Post) => {
+        return await this.postRepository
             .create(post)
             .then(() => this.res.status(200).json({status: 'success'}))
             .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
     }
 
-    public update = (id: string, post: Post) => {
-        this.postRepository
+    public update = async (id: string, post: Post) => {
+        return await this.postRepository
             .update(id, post)
-            .then(data => {
-                if (!data) {
+            .then((posts: Post[]) => {
+                if (!posts) {
                     return this.res.status(404).json({status: 'error'})
                 }
 
-                this.res.status(200).json({status: 'success'})
+                return this.res.status(200).json({status: 'success'})
             })
             .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
     }
 
-    public destroy = (id: string) => {
-        this.postRepository
+    public destroy = async (id: string) => {
+        return await this.postRepository
             .destroy(id)
-            .then(data => {
-                if (!data) {
+            .then((posts: Post[]) => {
+                if (!posts) {
                     return this.res.status(404).json({status: 'error'})
                 }
 
-                this.res.status(200).json({status: 'success'})
+                return this.res.status(200).json({status: 'success'})
             })
             .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
     }

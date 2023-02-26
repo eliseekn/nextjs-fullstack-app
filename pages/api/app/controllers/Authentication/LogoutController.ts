@@ -1,5 +1,6 @@
 import {NextApiResponse} from "next"
 import {UserRepository, TokenRepository} from "@/pages/api/app/repositories"
+import {User} from "@/pages/api/app/interfaces";
 
 export default class LogoutController {
     private res: NextApiResponse
@@ -12,15 +13,15 @@ export default class LogoutController {
         this.tokenRepository = new TokenRepository()
     }
 
-    public logout = (id: string) => {
-        this.userRepository
+    public logout = async (id: string) => {
+        return await this.userRepository
             .findOne(id)
-            .then(data => {
-                if (!data) {
+            .then(async (user: User) => {
+                if (!user) {
                     return this.res.status(404).json({status: 'error'})
                 }
 
-                return this.tokenRepository
+                return await this.tokenRepository
                     .destroy(id)
                     .then(() => this.res.status(200).json({status: 'success'}))
                     .catch(e => this.res.status(500).json({status: 'error', message: e.message}))

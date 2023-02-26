@@ -12,9 +12,8 @@ export default async function handler(
     const loginController = new LoginController(res)
 
     if (req.method === 'POST') {
-        return loginController.authenticate(req.body)
+        return await loginController.authenticate(req.body)
     }
 
-    res.setHeader('Allow', ['POST'])
-    res.status(405).json({status: 'error'})
+    return res.status(405).json({status: 'error'})
 }

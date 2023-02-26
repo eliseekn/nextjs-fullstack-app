@@ -8,14 +8,13 @@ export default async function handler(
     res: NextApiResponse
 ) {
     await middleware(req, res, cors)
-    await auth(req, res)
 
     const logoutController = new LogoutController(res)
 
     if (req.method === 'POST') {
-        return logoutController.logout(req.query.id as string)
+        await auth(req, res)
+        return await logoutController.logout(req.query.id as string)
     }
 
-    res.setHeader('Allow', ['POST'])
-    res.status(405).json({status: 'error'})
+    return res.status(405).json({status: 'error'})
 }

@@ -1,5 +1,6 @@
 import {NextApiResponse} from "next"
 import {UserRepository, TokenRepository} from "@/pages/api/app/repositories"
+import {Token, User} from "@/pages/api/app/interfaces"
 const bcrypt = require('bcrypt')
 
 export default class LoginController {
@@ -13,24 +14,24 @@ export default class LoginController {
         this.tokenRepository = new TokenRepository()
     }
 
-    public authenticate = ({email, password}: {email: string, password: string}) => {
-        this.userRepository
+    public authenticate = async ({email, password}: {email: string, password: string}) => {
+        return await this.userRepository
             .findOneBy('email', email)
-            .then(data => {
-                if (!data) {
+            .then(async (user: User) => {
+                if (!user) {
                     return this.res.status(400).json({status: 'error'})
                 }
 
-                if (!bcrypt.compareSync(password, data.password)) {
+                if (!bcrypt.compareSync(password, user.password)) {
                     return this.res.status(401).json({status: 'error'})
                 }
 
-                return this.tokenRepository
-                    .create(data.id as string)
-                    .then(token => {
+                return await this.tokenRepository
+                    .create(user.id as string)
+                    .then((token: Token) => {
                         return this.res.status(200).json({
                             token: token.value,
-                            user: data
+                            user: user
                         })
                     })
                     .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
