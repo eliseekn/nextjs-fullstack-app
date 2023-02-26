@@ -1,8 +1,10 @@
 import supertest from "supertest"
+import {refreshDatabase} from "../concerns"
 
 const req = supertest.agent("http://localhost:3000/api")
+afterEach(() => refreshDatabase())
 
-it('can get login', () => {
+test('can log in', () => {
     req.post('/login')
         .send({
             "email": "john@doe.com",
@@ -17,15 +19,14 @@ it('can get login', () => {
         })
 })
 
-it('can get logout', async () => {
-    await req.post('/login')
+test('can log out', async () => {
+    const authRes = await req.post('/login')
         .send({
             email: "john@doe.com",
             password: "password",
         })
-        .then(async res => {
-            await req.post('/logout/' + res.body.user.id)
-                .set({Authorization: 'Bearer ' + res.body.token})
-                .expect(200)
-        })
+
+    await req.post('/logout/' + authRes.body.user.id)
+        .set({Authorization: 'Bearer ' + authRes.body.token})
+        .expect(200)
 })

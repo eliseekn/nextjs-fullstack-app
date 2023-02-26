@@ -8,10 +8,11 @@ export default async function handler(
     res: NextApiResponse
 ) {
     await middleware(req, res, cors)
-    await auth(req, res)
-    await admin(req, res)
 
     const userController = new UserController(res)
+
+    await auth(req, res)
+    await admin(req, res)
 
     switch (req.method) {
         case 'GET': return userController.getItem(req.query.id as string)

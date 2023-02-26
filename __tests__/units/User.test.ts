@@ -3,7 +3,7 @@ import {User} from "@/pages/api/app/interfaces"
 import UserModel from "../../pages/api/app/models/UserModel"
 
 describe('User tests', () => {
-    it('can initialize User', () => {
+    test('can initialize User', () => {
         let user: User = {
             name: "John Doe",
             email: "john@doe.com",
@@ -16,7 +16,7 @@ describe('User tests', () => {
 })
 
 describe('UserModel tests', () => {
-    it('can set User properties', () => {
+    test('can set User properties', () => {
         let user: User = {
             name: "John Doe",
             email: "john@doe.com",
@@ -38,7 +38,7 @@ describe('UserModel tests', () => {
         expect(user.password).toBeDefined()
     })
 
-    it('can get User properties', () => {
+    test('can get User properties', () => {
         let user: User = {
             name: "John Doe",
             email: "john@doe.com",
