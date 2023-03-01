@@ -8,7 +8,7 @@ export default async function handler(
     res: NextApiResponse
 ) {
     await middleware(req, res, cors)
-    await middleware(req, res, auth)
+    await auth(req, res)
 
     const logoutController = new LogoutController(res)
 

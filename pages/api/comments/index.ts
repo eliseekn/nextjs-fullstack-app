@@ -13,12 +13,12 @@ export default async function handler(
 
     switch (req.method) {
         case 'GET': {
-            await middleware(req, res, auth)
-            await middleware(req, res, role)
+            await auth(req, res)
+            await role(req, res)
             await commentController.getCollection()
         }
         case 'POST': {
-            await middleware(req, res, auth)
+            await auth(req, res)
             await commentController.store(req.body)
         }
         default: res.status(405).json({status: 'error'})

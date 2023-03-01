@@ -14,15 +14,13 @@ export default async function handler(
     switch (req.method) {
         case 'GET': await postController.getItem(req.query.id as string)
         case 'PATCH': {
-            await middleware(req, res, auth)
-            await middleware(req, res, role)
-
+            await auth(req, res)
+            await role(req, res)
             await postController.update(req.query.id as string, req.body)
         }
         case 'DELETE': {
-            await middleware(req, res, auth)
-            await middleware(req, res, role)
-
+            await auth(req, res)
+            await role(req, res)
             await postController.destroy(req.query.id as string)
         }
         default: res.status(405).json({status: 'error'})
