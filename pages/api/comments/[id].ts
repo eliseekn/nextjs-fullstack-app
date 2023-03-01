@@ -12,17 +12,15 @@ export default async function handler(
     const commentController = new CommentController(res)
 
     switch (req.method) {
-        case 'GET': return commentController.getItem(req.query.id as string)
+        case 'GET': await commentController.getItem(req.query.id as string)
         case 'PATCH': {
-            await auth(req, res)
-            return commentController.update(req.query.id as string, req.body)
+            await middleware(req, res, auth)
+            await commentController.update(req.query.id as string, req.body)
         }
         case 'DELETE': {
-            await auth(req, res)
-            return commentController.destroy(req.query.id as string)
+            await middleware(req, res, auth)
+            await commentController.destroy(req.query.id as string)
         }
-        default:
-            res.setHeader('Allow', ['GET', 'PATCH', 'DELETE'])
-            res.status(405).json({status: 'error'})
+        default: res.status(405).json({status: 'error'})
     }
 }

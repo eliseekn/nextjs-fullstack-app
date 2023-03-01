@@ -18,10 +18,10 @@ export default class LogoutController {
             .findOne(id)
             .then(async (user: User) => {
                 if (!user) {
-                    return this.res.status(404).json({status: 'error'})
+                    this.res.status(404).json({status: 'error'})
                 }
 
-                return await this.tokenRepository
+                await this.tokenRepository
                     .destroy(id)
                     .then(() => this.res.status(200).json({status: 'success'}))
                     .catch(e => this.res.status(500).json({status: 'error', message: e.message}))

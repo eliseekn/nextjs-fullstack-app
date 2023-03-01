@@ -1,7 +1,7 @@
 import type {NextApiRequest, NextApiResponse} from 'next'
 import {PostController} from "../app/controllers"
 import {middleware} from "@/pages/api/app/helpers"
-import {cors, auth, hasRole} from "@/pages/api/app/middlewares"
+import {cors, auth, role} from "@/pages/api/app/middlewares"
 
 export default async function handler(
     req: NextApiRequest,
@@ -12,21 +12,19 @@ export default async function handler(
     const postController = new PostController(res)
 
     switch (req.method) {
-        case 'GET': return postController.getItem(req.query.id as string)
+        case 'GET': await postController.getItem(req.query.id as string)
         case 'PATCH': {
-            const token = await auth(req, res)
-            await hasRole(res, token as string)
+            await middleware(req, res, auth)
+            await middleware(req, res, role)
 
-            return postController.update(req.query.id as string, req.body)
+            await postController.update(req.query.id as string, req.body)
         }
         case 'DELETE': {
-            const token = await auth(req, res)
-            await hasRole(res, token as string)
+            await middleware(req, res, auth)
+            await middleware(req, res, role)
 
-            return postController.destroy(req.query.id as string)
+            await postController.destroy(req.query.id as string)
         }
-        default:
-            res.setHeader('Allow', ['GET', 'PATCH', 'DELETE'])
-            res.status(405).json({status: 'error'})
+        default: res.status(405).json({status: 'error'})
     }
 }

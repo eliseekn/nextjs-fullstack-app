@@ -12,61 +12,61 @@ export default class CommentController {
     }
 
     public getCollection = async () => {
-        return await this.commentRepository
+        await this.commentRepository
             .findAll()
             .then((comments: Comment[]) => this.res.status(200).json(comments))
             .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
     }
 
     public getPostCollection = async (postId: string) => {
-        return await this.commentRepository
+        await this.commentRepository
             .findAllBy('postId', postId)
             .then((comments: Comment[]) => this.res.status(200).json(comments))
             .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
     }
 
     public getItem = async (id: string) => {
-        return await this.commentRepository
+        await this.commentRepository
             .findOne(id)
             .then((comment: Comment) => {
                 if (!comment) {
-                    return this.res.status(404).json({status: 'error'})
+                    this.res.status(404).json({status: 'error'})
                 }
 
-                return this.res.status(200).json(comment)
+                this.res.status(200).json(comment)
             })
             .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
     }
 
     public store = async (comment: Comment) => {
-        return await this.commentRepository
+        await this.commentRepository
             .create(comment)
             .then(() => this.res.status(200).json({status: 'success'}))
             .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
     }
 
     public update = async (id: string, comment: Comment) => {
-        return await this.commentRepository
+        await this.commentRepository
             .update(id, comment)
             .then((comments: Comment[]) => {
                 if (!comments) {
-                    return this.res.status(404).json({status: 'error'})
+                    this.res.status(404).json({status: 'error'})
                 }
 
-                return this.res.status(200).json({status: 'success'})
+                this.res.status(200).json({status: 'success'})
             })
             .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
     }
 
     public destroy = async (id: string) => {
-        return await this.commentRepository
+        await this.commentRepository
             .destroy(id)
             .then((comments: Comment[]) => {
                 if (!comments) {
-                    return this.res.status(404).json({status: 'error'})
+                    this.res.status(404).json({status: 'error'})
                 }
 
-                return this.res.status(200).json({status: 'success'})
+                this.res.status(200).json({status: 'success'})
             })
             .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
     }

@@ -12,9 +12,8 @@ export default async function handler(
     const commentController = new CommentController(res)
 
     if (req.method === 'GET') {
-        return commentController.getPostCollection(req.query.id as string)
+        await commentController.getPostCollection(req.query.id as string)
     }
 
-    res.setHeader('Allow', ['GET'])
     res.status(405).json({status: 'error'})
 }

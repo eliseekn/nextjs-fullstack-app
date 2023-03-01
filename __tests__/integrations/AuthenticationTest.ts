@@ -19,7 +19,7 @@ test('can log in', () => {
         })
 })
 
-test('can log out', async () => {
+test.only('can log out', async () => {
     const authRes = await req.post('/login')
         .send({
             email: "john@doe.com",

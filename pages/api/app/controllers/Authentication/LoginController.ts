@@ -15,21 +15,21 @@ export default class LoginController {
     }
 
     public authenticate = async ({email, password}: {email: string, password: string}) => {
-        return await this.userRepository
+        await this.userRepository
             .findOneBy('email', email)
             .then(async (user: User) => {
                 if (!user) {
-                    return this.res.status(400).json({status: 'error'})
+                    this.res.status(400).json({status: 'error'})
                 }
 
                 if (!bcrypt.compareSync(password, user.password)) {
-                    return this.res.status(401).json({status: 'error'})
+                    this.res.status(401).json({status: 'error'})
                 }
 
-                return await this.tokenRepository
+                await this.tokenRepository
                     .create(user.id as string)
                     .then((token: Token) => {
-                        return this.res.status(200).json({
+                        this.res.status(200).json({
                             token: token.value,
                             user: user
                         })

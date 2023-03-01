@@ -1,12 +1,12 @@
-import type {NextApiRequest} from 'next'
+import type {NextApiRequest, NextApiResponse} from 'next'
 import {TokenRepository} from "@/pages/api/app/repositories"
 import {Token} from "@/pages/api/app/interfaces"
 
-export const apiToken = async (req: NextApiRequest) => {
+export const auth = async (req: NextApiRequest, res: NextApiResponse) => {
     const authorization = req.headers.authorization?.split(' ')
 
     if (!authorization || authorization[0] !== 'Bearer') {
-        return null
+        return res.status(403).json({status: 'errror'})
     }
 
     const tokenRepository = new TokenRepository()
@@ -14,5 +14,7 @@ export const apiToken = async (req: NextApiRequest) => {
         .findOne(authorization[1])
         .then((token: Token) => token)
 
-    return apiToken;
+    if (!apiToken) {
+        return res.status(403).json({status: 'errror'})
+    }
 }
