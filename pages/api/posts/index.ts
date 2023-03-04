@@ -12,12 +12,16 @@ export default async function handler(
     const postController = new PostController(res)
 
     switch (req.method) {
-        case 'GET': await postController.getCollection()
-        case 'POST': {
+        case 'GET':
+            await postController.getCollection()
+            break
+        case 'POST':
             await auth(req, res)
             await role(req, res)
             await postController.store(req.body)
-        }
-        default: res.status(405).json({status: 'error'})
+            break
+        default:
+            res.status(405).json({status: 'error'})
+            break
     }
 }

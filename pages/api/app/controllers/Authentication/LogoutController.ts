@@ -14,7 +14,7 @@ export default class LogoutController {
     }
 
     public logout = async (id: string) => {
-        return await this.userRepository
+        await this.userRepository
             .findOne(id)
             .then(async (user: User) => {
                 if (!user) {

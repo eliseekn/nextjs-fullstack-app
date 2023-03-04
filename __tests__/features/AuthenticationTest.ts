@@ -1,8 +1,9 @@
-import supertest from "supertest"
+import supertest, {Response} from "supertest"
 import {refreshDatabase} from "../concerns"
 
 const req = supertest.agent("http://localhost:3000/api")
-//beforeEach(() => refreshDatabase())
+afterAll(() => refreshDatabase())
+beforeEach(() => refreshDatabase())
 
 test('can log in', () => {
     req.post('/login')
@@ -11,7 +12,7 @@ test('can log in', () => {
             "password": "password",
         })
         .expect(200)
-        .then(res => {
+        .then((res: Response) => {
             expect(res.body.token).toBeDefined()
             expect(res.body.user).toBeDefined()
             expect(res.body.user).toBeInstanceOf(Object)
@@ -19,8 +20,8 @@ test('can log in', () => {
         })
 })
 
-test.only('can log out', async () => {
-    const authRes = await req.post('/login')
+test('can log out', async () => {
+    const authRes: Response = await req.post('/login')
         .send({
             email: "john@doe.com",
             password: "password",

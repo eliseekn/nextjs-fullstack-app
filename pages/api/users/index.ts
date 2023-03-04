@@ -14,8 +14,14 @@ export default async function handler(
     const userController = new UserController(res)
 
     switch (req.method) {
-        case 'GET': await userController.getCollection()
-        case 'POST': await userController.store(req.body)
-        default: res.status(405).json({status: 'error'})
+        case 'GET':
+            await userController.getCollection()
+            break
+        case 'POST':
+            await userController.store(req.body)
+            break
+        default:
+            res.status(405).json({status: 'error'})
+            break
     }
 }

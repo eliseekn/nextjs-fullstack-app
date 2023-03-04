@@ -12,17 +12,21 @@ export default async function handler(
     const postController = new PostController(res)
 
     switch (req.method) {
-        case 'GET': await postController.getItem(req.query.id as string)
-        case 'PATCH': {
+        case 'GET':
+            await postController.getItem(req.query.id as string)
+            break
+        case 'PATCH':
             await auth(req, res)
             await role(req, res)
             await postController.update(req.query.id as string, req.body)
-        }
-        case 'DELETE': {
+            break
+        case 'DELETE':
             await auth(req, res)
             await role(req, res)
             await postController.destroy(req.query.id as string)
-        }
-        default: res.status(405).json({status: 'error'})
+            break
+        default:
+            res.status(405).json({status: 'error'})
+            break
     }
 }

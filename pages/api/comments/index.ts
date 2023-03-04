@@ -12,15 +12,17 @@ export default async function handler(
     const commentController = new CommentController(res)
 
     switch (req.method) {
-        case 'GET': {
+        case 'GET':
             await auth(req, res)
             await role(req, res)
             await commentController.getCollection()
-        }
-        case 'POST': {
+            break
+        case 'POST':
             await auth(req, res)
             await commentController.store(req.body)
-        }
-        default: res.status(405).json({status: 'error'})
+            break
+        default:
+            res.status(405).json({status: 'error'})
+            break
     }
 }

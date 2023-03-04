@@ -3,6 +3,11 @@ import {UserRepository, TokenRepository} from "@/pages/api/app/repositories"
 import {Token, User} from "@/pages/api/app/interfaces"
 const bcrypt = require('bcrypt')
 
+type Credentials = {
+    email: string,
+    password: string
+}
+
 export default class LoginController {
     private res: NextApiResponse
     private userRepository: UserRepository
@@ -14,7 +19,7 @@ export default class LoginController {
         this.tokenRepository = new TokenRepository()
     }
 
-    public authenticate = async ({email, password}: {email: string, password: string}) => {
+    public authenticate = async ({email, password}: Credentials) => {
         await this.userRepository
             .findOneBy('email', email)
             .then(async (user: User) => {
