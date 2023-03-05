@@ -15,6 +15,8 @@ export default class LoginController {
     }
 
     public authenticate = async (email: string, password: string) => {
+        console.log(email, password)
+
         await this.userRepository
             .findOneBy('email', email)
             .then(async (user: User) => {
