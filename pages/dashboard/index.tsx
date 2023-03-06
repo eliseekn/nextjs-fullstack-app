@@ -4,6 +4,8 @@ import Image from 'next/image'
 import {FormEvent, useEffect, useState} from 'react'
 import {truncate} from "@/utils";
 import {PaginatePost, Post} from "@/pages/api/app/interfaces/PostInterface";
+import { getToken } from '@/services';
+import { getAuth } from '@/services/auth';
 
 const Dashboard = (posts: PaginatePost, page: number, limit: number) => {
     // console.log(page)
@@ -121,11 +123,11 @@ const Dashboard = (posts: PaginatePost, page: number, limit: number) => {
     </>
 }
 
-export async function getServerSideProps({ query: { page = 1, limit = 5 } }) {
+export async function getServerSideProps({ query: { page = 1, limit = 5 }, req: Request }) {
     const res = await fetch(`/api/posts?page=${page}&limit=${limit}`, {
         headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer " + localStorage.getItem('token') as string
+            "Authorization": "Bearer " + getAuth(req).token
         },
     })
 
