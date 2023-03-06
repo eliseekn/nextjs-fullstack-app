@@ -1,4 +1,5 @@
 import db from '../database'
+import { paginate } from '../helpers'
 import {Post, Repository} from '../interfaces'
 import {PostModel} from '../models'
 
@@ -38,17 +39,7 @@ export default class PostRepository implements Repository {
 
     findAllPaginate = async (page: number = 1, limit: number = 15) => {
         const posts: Post[] = await this.findAll()
-        const totalPages: number = Math.ceil(posts.length / limit)
-
-        if (page > totalPages) {
-            page = totalPages
-        }
-
-        return {
-            'page': page,
-            'totalPages': totalPages,
-            'items': posts.slice((page * limit) - limit, page * limit)
-        }
+        return paginate(posts as [], page, limit)
     }
 
     findAllBy = async (key: string, value: string) => {

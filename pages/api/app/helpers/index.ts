@@ -11,11 +11,7 @@ export const slugify = (text: string) => {
 }
 
 //https://github.com/vercel/next.js/blob/canary/examples/api-routes-cors/pages/api/cors.ts
-export const middleware = (
-    req: NextApiRequest,
-    res: NextApiResponse,
-    fn: Function
-) => {
+export const middleware = (req: NextApiRequest, res: NextApiResponse, fn: Function) => {
     return new Promise((resolve, reject) => {
         fn(req, res, (result: any) => {
             if (result instanceof Error) {
@@ -25,4 +21,18 @@ export const middleware = (
             return resolve(result)
         })
     })
+}
+
+export const paginate = (items: [], page: number, limit: number) => {
+    const totalPages: number = Math.ceil(items.length / limit)
+
+    if (page > totalPages) {
+        page = totalPages
+    }
+
+    return {
+        page: page,
+        totalPages: totalPages,
+        items: items.slice((page * limit) - limit, page * limit)
+    }
 }

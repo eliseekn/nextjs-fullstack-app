@@ -2,19 +2,23 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Image from 'next/image'
 import {FormEvent, useEffect, useState} from 'react'
-import {truncate} from "@/utils";
-import {PaginatePost, Post} from "@/pages/api/app/interfaces/PostInterface";
-import { getToken } from '@/services';
-import { getAuth } from '@/services/auth';
+import {truncate} from "@/utils"
+import {Pagination, Post} from "@/pages/api/app/interfaces"
+import useSWR from 'swr'
 
-const Dashboard = (posts: PaginatePost, page: number, limit: number) => {
-    // console.log(page)
-
+const Dashboard = ({page, limit}: {page: number, limit: number}) => {
     const router = useRouter()
     const [alert, showAlert] = useState(false)
-    // const [posts, setPosts] = useState<PaginatePost>()
-    // const [page, setPage] = useState<number>(1)
-    // const [limit, setLimit] = useState<number>(15)
+
+    const { data } = useSWR<Pagination>(`/api/posts?page=${page}&limit=${limit}`, async (url: string) => {
+        return fetch(url, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('user') as string
+            }
+        })
+            .then(res => res.json())
+    })
 
     useEffect(() => {
         const value = localStorage.getItem('user');
@@ -27,7 +31,7 @@ const Dashboard = (posts: PaginatePost, page: number, limit: number) => {
         if (user && user.role != 'admin') {
             router.push('/')
         }
-    }, [])
+    })
 
     const handleOnSubmit = async (e: FormEvent<HTMLFormElement>, id: string) => {
         e.preventDefault()
@@ -43,7 +47,7 @@ const Dashboard = (posts: PaginatePost, page: number, limit: number) => {
     return <>
         <div className="container mt-5">
             <div className="d-flex justify-content-between align-items-center mb-5">
-                <h1>Posts ({posts?.items?.length})</h1>
+                <h1>Posts ({data?.items?.length})</h1>
                 <Link href="/dashboard/create" className="btn btn-primary" target="_blank">
                     Create post
                 </Link>
@@ -67,7 +71,7 @@ const Dashboard = (posts: PaginatePost, page: number, limit: number) => {
                 </thead>
 
                 <tbody>
-                    {posts?.items?.map((post: Post, i: number) => (
+                    {data?.items?.map((post: Post, i: number) => (
                     <tr key={i} className="align-middle">
                         <th scope="row">{i + 1}</th>
                         {/*<td><Image src={`${process.env.NEXT_PUBLIC_API_PUBLIC_URL}/${post.image}`} className="img-fluid" alt="Image de l'article" width="200" height="200" /></td>*/}
@@ -102,17 +106,17 @@ const Dashboard = (posts: PaginatePost, page: number, limit: number) => {
 
             <nav className="my-5">
                 <ul className="pagination justify-content-center">
-                    {posts?.page! > 1 && <li className="page-item">
+                    {data?.page! > 1 && <li className="page-item">
                         <button className="page-link text-primary" onClick={() => router.push(`?page=${page - 1}&limit=${limit}`)}>
                             &laquo;
                         </button>
                     </li>}
 
-                    {posts?.totalPages! > 1 && <li className="page-item page-link text-primary">
-                        Page {posts?.page!}/{posts?.totalPages!}
+                    {data?.totalPages! > 1 && <li className="page-item page-link text-primary">
+                        Page {data?.page!}/{data?.totalPages!}
                     </li>}
 
-                    {posts?.page! < posts?.totalPages! && <li className="page-item">
+                    {data?.page! < data?.totalPages! && <li className="page-item">
                         <button className="page-link text-primary" onClick={() => router.push(`?page=${page + 1}&limit=${limit}`)}>
                             &raquo;
                         </button>
@@ -123,19 +127,9 @@ const Dashboard = (posts: PaginatePost, page: number, limit: number) => {
     </>
 }
 
-export async function getServerSideProps({ query: { page = 1, limit = 5 }, req: Request }) {
-    const res = await fetch(`/api/posts?page=${page}&limit=${limit}`, {
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + getAuth(req).token
-        },
-    })
-
-    const posts = await res.json()
-
+export async function getServerSideProps({ query: { page = 1, limit = 15 } }) {
     return {
         props: {
-            posts: posts,
             page: page,
             limit: limit
         }

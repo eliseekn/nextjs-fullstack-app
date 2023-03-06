@@ -1,11 +1,9 @@
 import { useRouter } from 'next/router'
 import {FormEvent, useLayoutEffect, useRef, useState} from "react"
-import { useCookies } from "react-cookie"
 
 const Login = () => {
     const router = useRouter()
 
-    const [cookie, setCookie] = useCookies(['user'])
     const [loading, showLoading] = useState<boolean>(false)
     const [alert, showAlert] = useState<boolean>(false)
     const email = useRef<HTMLInputElement>(null)
@@ -30,14 +28,9 @@ const Login = () => {
 
         if (res.status === 200) {
             const data = await res.json()
-            const {user, token} = data
-            
-            user.token = token
 
-            setCookie('user', JSON.stringify(user), {
-                path: "/",
-                sameSite: true,
-            })
+            localStorage.setItem('user', JSON.stringify(data.user))
+            localStorage.setItem('token', data.token)
 
             await router.push('/dashboard')
         }
