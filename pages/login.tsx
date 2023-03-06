@@ -6,11 +6,11 @@ const Login = () => {
 
     const [loading, showLoading] = useState<boolean>(false)
     const [alert, showAlert] = useState<boolean>(false)
-    const emailRef = useRef<HTMLInputElement>(null)
-    const passwordRef = useRef<HTMLInputElement>(null)
+    const email = useRef<HTMLInputElement>(null)
+    const password = useRef<HTMLInputElement>(null)
 
     useLayoutEffect(() => {
-        emailRef.current?.focus()
+        email.current?.focus()
     })
 
     const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -19,19 +19,24 @@ const Login = () => {
 
         const res = await fetch('/api/login', {
             method: 'post',
+            headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
-                "email": emailRef.current!.value,
-                "password": passwordRef.current!.value
+                "email": email.current!.value,
+                "password": password.current!.value
             })
         })
 
-        if (res.status != 200) {
-            showAlert(true)
-            showLoading(false)
-        } else {
-            localStorage.setItem('auth', JSON.stringify(res.json()))
+        if (res.status === 200) {
+            const data = await res.json()
+
+            localStorage.setItem('token', JSON.stringify(data.token))
+            localStorage.setItem('user', JSON.stringify(data.user))
+
             await router.push('/dashboard')
         }
+
+        showAlert(true)
+        showLoading(false)
     }
 
     return <div className="container py-5" style={{ width: 450 }}>
@@ -45,15 +50,15 @@ const Login = () => {
             <form onSubmit={handleOnSubmit}>
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">Email</label>
-                    <input type="email" id="email" name="email" className="form-control" required ref={emailRef} />
+                    <input type="email" id="email" name="email" className="form-control" required ref={email} />
                 </div>
 
                 <div className="mb-3">
                     <label htmlFor="content" className="form-label">Password</label>
-                    <input type="password" id="password" name="password" className="form-control" required ref={passwordRef} />
+                    <input type="password" id="password" name="password" className="form-control" required ref={password} />
                 </div>
 
-                <button type="submit" className="btn btn-dark">
+                <button type="submit" className="btn btn-primary">
                     {loading && <div className="spinner-border spinner-border-sm me-1" role="status"></div>} Log in
                 </button>
             </form>

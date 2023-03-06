@@ -1,6 +1,7 @@
 import {NextApiResponse} from "next"
 import {Post} from "@/pages/api/app/interfaces"
 import {PostRepository} from "@/pages/api/app/repositories"
+import {PaginatePost} from "@/pages/api/app/interfaces/PostInterface";
 
 export default class PostController {
     private res: NextApiResponse
@@ -11,10 +12,17 @@ export default class PostController {
         this.postRepository = new PostRepository()
     }
 
-    public getCollection = async () => {
+    public getCollection = async (page?: number, limit?: number) => {
+        if (!page || !limit) {
+            return await this.postRepository
+                .findAll()
+                .then((posts: Post[]) => this.res.status(200).json(posts))
+                .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
+        }
+
         await this.postRepository
-            .findAll()
-            .then((posts: Post[]) => this.res.status(200).json(posts))
+            .findAllPaginate(page, limit)
+            .then((posts: PaginatePost) => this.res.status(200).json(posts))
             .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
     }
 

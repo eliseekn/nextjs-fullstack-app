@@ -13,7 +13,8 @@ export default async function handler(
 
     switch (req.method) {
         case 'GET':
-            await postController.getCollection()
+            const {page, limit} = req.query
+            await postController.getCollection(parseInt(page as string),parseInt(limit as string))
             break
         case 'POST':
             await auth(req, res)

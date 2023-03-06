@@ -5,6 +5,7 @@ export interface Repository  {
     findOne(id: any): Promise<any>
     findOneBy(key: any, value: any): Promise<any>
     findAll(): Promise<any>
+    findAllPaginate(): Promise<any>
     findAllBy(key: any, value: any): Promise<any>
     create(data: any): Promise<any>
     update(id: any, data: any): Promise<any>

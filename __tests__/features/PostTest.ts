@@ -2,8 +2,8 @@ import supertest, {Response} from "supertest"
 import {refreshDatabase} from "../concerns"
 
 const req = supertest.agent("http://localhost:3000/api")
-afterAll(() => refreshDatabase())
-beforeEach(() => refreshDatabase())
+// afterAll(() => refreshDatabase())
+// beforeEach(() => refreshDatabase())
 
 test('can store post', async () => {
     const authRes: Response = await req.post('/login')

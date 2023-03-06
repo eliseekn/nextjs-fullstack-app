@@ -7,3 +7,9 @@ export type Post = {
     publishedAt?: string,
     editedAt?: string
 }
+
+export type PaginatePost = {
+    page: number,
+    totalPages: number,
+    items: Post[]
+}

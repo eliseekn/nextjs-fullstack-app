@@ -36,6 +36,21 @@ export default class PostRepository implements Repository {
 
     findAll = async () => await this.read()
 
+    findAllPaginate = async (page: number = 1, limit: number = 15) => {
+        const posts: Post[] = await this.findAll()
+        const totalPages: number = Math.ceil(posts.length / limit)
+
+        if (page > totalPages) {
+            page = totalPages
+        }
+
+        return {
+            'page': page,
+            'totalPages': totalPages,
+            'items': posts.slice((page * limit) - limit, page * limit)
+        }
+    }
+
     findAllBy = async (key: string, value: string) => {
         let posts: Post[] = await this.read()
         return posts.filter(post => post[key as keyof Post] === value)
