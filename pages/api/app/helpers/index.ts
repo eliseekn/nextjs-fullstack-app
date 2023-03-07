@@ -7,7 +7,7 @@ export const slugify = (text: string) => {
         .replace(/[^\w\-]+/g, '')
         .replace(/\-\-+/g, '-')
         .replace(/^-+/, '')
-        .replace(/-+$/, '');
+        .replace(/-+$/, '')
 }
 
 //https://github.com/vercel/next.js/blob/canary/examples/api-routes-cors/pages/api/cors.ts
@@ -36,3 +36,11 @@ export const paginate = (items: [], page: number, limit: number) => {
         items: items.slice((page * limit) - limit, page * limit)
     }
 }
+
+//https://stackoverflow.com/a/57272491
+export const toBase64 = (file: any) => new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = error => reject(error)
+})

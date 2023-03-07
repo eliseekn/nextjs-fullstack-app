@@ -4,6 +4,7 @@ export type Post = {
     title: string,
     slug?: string,
     content: string,
+    image: string,
     publishedAt?: string,
     editedAt?: string
 }

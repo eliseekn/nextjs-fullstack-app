@@ -1,5 +1,6 @@
+import { base64ToFile } from '@/utils'
 import db from '../database'
-import { paginate } from '../helpers'
+import { paginate, slugify } from '../helpers'
 import {Post, Repository} from '../interfaces'
 import {PostModel} from '../models'
 
@@ -47,7 +48,13 @@ export default class PostRepository implements Repository {
         return posts.filter(post => post[key as keyof Post] === value)
     }
 
-    create = async (post: Post) => await this.add(post).then(async () => await this.read())
+    create = async (post: Post) => {
+        const fileName: string = slugify(post.title)
+        base64ToFile(post.image, fileName)
+        post.image = fileName
+
+        return await this.add(post).then(async () => await this.read())
+    }
 
     update = async (id: string, newPost: Post) => {
         let posts: Post[] = await this.read()

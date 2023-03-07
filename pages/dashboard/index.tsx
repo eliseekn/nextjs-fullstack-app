@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import {FormEvent, useEffect, useState} from 'react'
 import {truncate} from "@/utils"
-import {Pagination, Post} from "@/pages/api/app/interfaces"
+import {Pagination, Post, User} from "@/pages/api/app/interfaces"
 import useSWR from 'swr'
 
 const Dashboard = ({page, limit}: {page: number, limit: number}) => {
@@ -21,14 +21,13 @@ const Dashboard = ({page, limit}: {page: number, limit: number}) => {
     })
 
     useEffect(() => {
-        const value = localStorage.getItem('user');
-        const user = !!value ? JSON.parse(value) : undefined;
-
-        if (!user) {
+        if (!localStorage.getItem('user')) {
             router.push('/login')
         }
 
-        if (user && user.role != 'admin') {
+        const user: User = JSON.parse(localStorage.getItem('user') as string)
+
+        if (user.role != 'admin') {
             router.push('/')
         }
     })
@@ -61,7 +60,7 @@ const Dashboard = ({page, limit}: {page: number, limit: number}) => {
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        {/*<th scope="col">Image</th>*/}
+                        <th scope="col">Image</th>
                         <th scope="col">Title</th>
                         <th scope="col">Content</th>
                         <th scope="col">Published at</th>
@@ -74,7 +73,7 @@ const Dashboard = ({page, limit}: {page: number, limit: number}) => {
                     {data?.items?.map((post: Post, i: number) => (
                     <tr key={i} className="align-middle">
                         <th scope="row">{i + 1}</th>
-                        {/*<td><Image src={`${process.env.NEXT_PUBLIC_API_PUBLIC_URL}/${post.image}`} className="img-fluid" alt="Image de l'article" width="200" height="200" /></td>*/}
+                        <td><Image src={`/upload/${post.image}`} className="img-fluid" alt="Image de l'article" width="200" height="200" /></td>
                         <td>{post.title}</td>
                         <td>{truncate(post.content, 290)}</td>
                         <td>{new Date(post.publishedAt as string).toLocaleDateString('en', { year: "numeric", month: "short", day: "numeric"})}</td>
