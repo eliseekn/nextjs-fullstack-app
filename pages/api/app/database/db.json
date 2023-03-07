@@ -1,1 +1,49 @@
-{"users":[{"id":"1cb468dd-0f6e-4551-9834-337de6adb6f0","name":"John Doe","email":"john@doe.com","phone":"0000000000","password":"$2a$10$QIxJVUKlWLt53Dcw0IdG/.48ihT7HBouTO/fENLvD3vAesOXpMoPq","role":"admin","createdAt":"2023-02-25T07:45:49.457Z"}],"tokens":[],"posts":[],"comments":[]}
+{
+  "users": [
+    {
+      "id": "1cb468dd-0f6e-4551-9834-337de6adb6f0",
+      "name": "John Doe",
+      "email": "john@doe.com",
+      "phone": "0000000000",
+      "password": "$2a$10$QIxJVUKlWLt53Dcw0IdG/.48ihT7HBouTO/fENLvD3vAesOXpMoPq",
+      "role": "admin",
+      "createdAt": "2023-02-25T07:45:49.457Z"
+    }
+  ],
+  "tokens": [
+    {
+      "userId": "1cb468dd-0f6e-4551-9834-337de6adb6f0",
+      "value": "86ad2335-9822-4be8-9b8e-22210e18c207"
+    }
+  ],
+  "posts": [
+    {
+      "id": "14df710f-0937-405e-93ee-a180c258a907",
+      "userId": "",
+      "title": "Lorem ipsum dolor sit amet",
+      "slug": "lorem-ipsum-dolor-sit-amet",
+      "content": "Sunt dolore labore non nobis ipsam excepturi pariatur consequatur. Sed dolorum est in voluptatem aspernatur dolore. Deserunt atque quasi sunt aut magnam.",
+      "image": "lorem-ipsum-dolor-sit-amet",
+      "publishedAt": "2023-03-07T12:15:06.043Z"
+    },
+    {
+      "id": "37f179bd-467f-4483-bc20-fe3f6b03b7b1",
+      "userId": "",
+      "title": "Consectetur ipsum nihil aut molestiae",
+      "slug": "consectetur-ipsum-nihil-aut-molestiae",
+      "content": "Mollitia provident harum aliquid est quis nihil qui optio. Pariatur culpa veritatis vel omnis sit voluptatibus quidem. Laboriosam iusto odio dolorem numquam. Necessitatibus odio sint quisquam ut dicta sit. Et atque et non hic.",
+      "image": "consectetur-ipsum-nihil-aut-molestiae",
+      "publishedAt": "2023-03-07T13:43:24.250Z"
+    },
+    {
+      "id": "9761b0ac-2094-482d-b3cd-9639adbaee70",
+      "userId": "",
+      "title": "test",
+      "slug": "test",
+      "content": "test",
+      "image": "test",
+      "publishedAt": "2023-03-07T13:49:35.633Z"
+    }
+  ],
+  "comments": []
+}

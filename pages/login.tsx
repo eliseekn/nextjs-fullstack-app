@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import {FormEvent, useLayoutEffect, useRef, useState} from "react"
+import {FormEvent, useEffect, useLayoutEffect, useRef, useState} from "react"
 
 const Login = () => {
     const router = useRouter()
@@ -8,6 +8,12 @@ const Login = () => {
     const [alert, showAlert] = useState<boolean>(false)
     const email = useRef<HTMLInputElement>(null)
     const password = useRef<HTMLInputElement>(null)
+
+    useEffect(() => {
+        if (localStorage.getItem('user')) {
+            router.push('/dashboard')
+        }
+    })
 
     useLayoutEffect(() => {
         email.current?.focus()

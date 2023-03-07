@@ -60,6 +60,14 @@ export default class PostRepository implements Repository {
 
         posts = posts.map(post => {
             if (post.id === id) {
+                if (newPost.image !== "") {
+                    // fs.unlinkSync(`${__dirname}/../public/uploads/${post.image}`)
+
+                    const fileName: string = slugify(newPost.title)
+                    base64ToFile(newPost.image, fileName)
+                    post.image = fileName
+                }
+
                 post.editedAt = new Date().toISOString()
                 return this.postModel.set({...post, ...newPost})
             }

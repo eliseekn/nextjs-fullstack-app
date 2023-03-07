@@ -14,7 +14,7 @@ const Dashboard = ({page, limit}: {page: number, limit: number}) => {
         return fetch(url, {
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem('user') as string
+                "Authorization": "Bearer " + localStorage.getItem('token') as string
             }
         })
             .then(res => res.json())
@@ -34,7 +34,13 @@ const Dashboard = ({page, limit}: {page: number, limit: number}) => {
 
     const handleOnSubmit = async (e: FormEvent<HTMLFormElement>, id: string) => {
         e.preventDefault()
-        const res = await fetch(`/api/post/${id}`, {method: 'DELETE'})
+        const res = await fetch(`/api/post/${id}`, {
+            method: 'delete',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem('token') as string
+            }
+        })
 
         if (res.status == 200) {
             showAlert(true)
@@ -42,11 +48,10 @@ const Dashboard = ({page, limit}: {page: number, limit: number}) => {
         }
     }
 
-    return <>
-        <div className="container mt-5">
+    return <div className="container mt-5">
             <div className="d-flex justify-content-between align-items-center mb-5">
                 <h1>Posts ({data?.items?.length})</h1>
-                <Link href="/dashboard/create" className="btn btn-primary" target="_blank">
+                <Link href="/dashboard/posts/create" className="btn btn-primary" target="_blank">
                     Create post
                 </Link>
             </div>
@@ -86,7 +91,7 @@ const Dashboard = ({page, limit}: {page: number, limit: number}) => {
                                     <i className="bi bi-chat-fill text-primary"></i>
                                 </Link>
 
-                                <Link href={`/dashboard/edit/${post.slug}`} className="mx-2" title="Edit" target="_blank">
+                                <Link href={`/dashboard/posts/edit/${post.id}`} className="mx-2" title="Edit" target="_blank">
                                     <i className="bi bi-pencil-square text-primary"></i>
                                 </Link>
 
@@ -121,8 +126,7 @@ const Dashboard = ({page, limit}: {page: number, limit: number}) => {
                     </li>}
                 </ul>
             </nav>
-        </div>
-    </>
+    </div>
 }
 
 export async function getServerSideProps({ query: { page = 1, limit = 15 } }) {
