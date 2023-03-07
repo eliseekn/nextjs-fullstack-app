@@ -1,6 +1,6 @@
 import type {NextApiRequest, NextApiResponse} from 'next'
-import {TokenRepository, UserRepository} from "@/pages/api/app/repositories";
-import {Token, User} from "@/pages/api/app/interfaces";
+import {TokenRepository, UserRepository} from "@/pages/api/app/repositories"
+import {Token, User} from "@/pages/api/app/interfaces"
 
 export const role = async (req: NextApiRequest, res: NextApiResponse, role: string = 'admin') => {
     const authorization = req.headers.authorization?.split(' ')

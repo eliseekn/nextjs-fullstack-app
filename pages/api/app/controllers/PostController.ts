@@ -1,7 +1,6 @@
 import {NextApiResponse} from "next"
 import {Post} from "@/pages/api/app/interfaces"
 import {PostRepository} from "@/pages/api/app/repositories"
-import {Pagination} from "@/pages/api/app/interfaces"
 
 export default class PostController {
     private res: NextApiResponse

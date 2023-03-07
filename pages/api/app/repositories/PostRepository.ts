@@ -1,6 +1,5 @@
-import { base64ToFile } from '@/utils'
 import db from '../database'
-import { paginate, slugify } from '../helpers'
+import { paginate, slugify, base64ToFile } from 'utils'
 import {Post, Repository} from '../interfaces'
 import {PostModel} from '../models'
 

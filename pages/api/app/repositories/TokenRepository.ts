@@ -36,6 +36,8 @@ export default class TokenRepository implements Repository {
 
     findAll = async () => Promise
 
+    findAllPaginate = async (page: number = 1, limit: number = 15) => Promise
+
     findAllBy = async (key: string, value: string) => Promise
 
     create = async (userId: string) => await this.add({userId: userId}).then(async () => await this.findOneBy("userId", userId))

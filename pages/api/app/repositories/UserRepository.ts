@@ -1,6 +1,7 @@
 import db from '../database'
 import {User, Repository} from '../interfaces'
 import {UserModel} from '../models'
+import { paginate } from 'utils'
 
 export default class UserRepository implements Repository {
     private userModel: UserModel
@@ -35,6 +36,11 @@ export default class UserRepository implements Repository {
     }
 
     findAll = async () => await this.read()
+
+    findAllPaginate = async (page: number = 1, limit: number = 15) => {
+        const users: User[] = await this.findAll()
+        return paginate(users as [], page, limit)
+    }
 
     findAllBy = async (key: string, value: string) => {
         let users: User[] = await this.read()

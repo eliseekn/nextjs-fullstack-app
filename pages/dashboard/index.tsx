@@ -34,7 +34,6 @@ const Dashboard = ({page, limit}: {page: number, limit: number}) => {
 
     const handleOnSubmit = async (e: FormEvent<HTMLFormElement>, id: string) => {
         e.preventDefault()
-
         const res = await fetch(`/api/post/${id}`, {method: 'DELETE'})
 
         if (res.status == 200) {

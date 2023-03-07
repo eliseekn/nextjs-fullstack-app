@@ -1,3 +1,4 @@
+import { paginate } from 'utils'
 import db from '../database'
 import {Comment, Repository} from '../interfaces'
 import {CommentModel} from '../models'
@@ -35,6 +36,11 @@ export default class CommentRepository implements Repository {
     }
 
     findAll = async () => await this.read()
+
+    findAllPaginate = async (page: number = 1, limit: number = 15) => {
+        const comments: Comment[] = await this.findAll()
+        return paginate(comments as [], page, limit)
+    }
 
     findAllBy = async (key: string, value: string) => {
         let comments: Comment[] = await this.read()

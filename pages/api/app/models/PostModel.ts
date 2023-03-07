@@ -1,6 +1,6 @@
 import {Post} from '../interfaces'
 import {randomUUID} from 'crypto'
-import {slugify} from "../helpers"
+import { slugify } from '../../../../utils'
 
 export default class PostModel {
     private id?: string

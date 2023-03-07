@@ -10,12 +10,3 @@ const adapter = new JSONFile<Tables>(file)
 const db = new Low(adapter)
 
 export default db
-
-// import { LowSync, MemorySync } from 'lowdb'
-// import { JSONFileSync } from '@/node_modules/lowdb/lib/node'
-// import {Tables} from "@/pages/api/app/interfaces"
-//
-// const adapter = process.env.NODE_ENV === 'test' ? new MemorySync<Tables>() : new JSONFileSync<Tables>('db.json')
-//
-// const db = new LowSync(adapter)
-// export default  db
