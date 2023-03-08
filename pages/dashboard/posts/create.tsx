@@ -36,6 +36,8 @@ export default function Create() {
 
         if (res.status === 200) {
             showAlertSuccess(true)
+            const form = e.target as HTMLFormElement
+            form.reset()
         } else {
             showAlertError(true)
         }

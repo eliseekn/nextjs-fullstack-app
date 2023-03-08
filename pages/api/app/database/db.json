@@ -13,20 +13,9 @@
   "tokens": [
     {
       "userId": "1cb468dd-0f6e-4551-9834-337de6adb6f0",
-      "value": "de6ab728-03fc-4120-b29a-afcb2ad09669"
+      "value": "3b151ff2-248a-4a6e-9a2e-3301a73494f6"
     }
   ],
-  "posts": [
-    {
-      "id": "b365aa41-6c68-4998-8f52-be4ef347d739",
-      "userId": "1cb468dd-0f6e-4551-9834-337de6adb6f0",
-      "title": "Ut enim ad minim veniam",
-      "slug": "ut-enim-ad-minim-veniam",
-      "content": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
-      "image": "",
-      "publishedAt": "2023-03-07T23:44:28.024Z",
-      "editedAt": "2023-03-08T00:04:41.140Z"
-    }
-  ],
+  "posts": [],
   "comments": []
 }

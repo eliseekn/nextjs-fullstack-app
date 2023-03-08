@@ -2,6 +2,8 @@ import db from '../database'
 import { paginate, slugify, base64ToFile } from 'utils'
 import {Post, Repository} from '../interfaces'
 import {PostModel} from '../models'
+import fs from "fs"
+import path from "path"
 
 export default class PostRepository implements Repository {
     private postModel: PostModel
@@ -60,15 +62,22 @@ export default class PostRepository implements Repository {
 
         posts = posts.map(post => {
             if (post.id === id) {
-                if (newPost.image !== "") {
-                    // fs.unlinkSync(`${__dirname}/../public/uploads/${post.image}`)
+                const fileName: string = slugify(newPost.title)
 
-                    const fileName: string = slugify(newPost.title)
+                if (newPost.image !== "") {
+                    fs.unlinkSync(path.relative(process.cwd(), `public/upload/${post.image}`))
                     base64ToFile(newPost.image, fileName)
-                    post.image = fileName
+                } else {
+                    fs.rename(
+                        path.relative(process.cwd(), `public/upload/${post.image}`),
+                        path.relative(process.cwd(), `public/upload/${fileName}`),
+                            err => console.log(err)
+                    )
                 }
 
+                post.image = fileName
                 post.editedAt = new Date().toISOString()
+
                 return this.postModel.set({...post, ...newPost})
             }
 
@@ -79,6 +88,9 @@ export default class PostRepository implements Repository {
     }
 
     destroy = async (id: string) => {
+        const post: Post = await this.findOne(id)
+        fs.unlinkSync(path.relative(process.cwd(), `public/upload/${post.image}`))
+
         let posts: Post[] = await this.read()
         posts = posts.filter(post => post.id !== id)
 

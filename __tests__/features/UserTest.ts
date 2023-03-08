@@ -41,7 +41,7 @@ test('can update user', async () => {
     await req.get('/users')
         .set({Authorization: 'Bearer ' + authRes.body.token})
         .then(async (res: Response) => {
-            await req.patch('/users/' + res.body[1].id)
+            await req.put('/users/' + res.body[1].id)
                 .set({Authorization: 'Bearer ' + authRes.body.token})
                 .send({
                     "name": "Sarah Doe",

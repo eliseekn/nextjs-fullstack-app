@@ -16,7 +16,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         case 'PUT':
             await ApiToken(req, res)
             await UserRole(req, res)
-
             await postController.update(id as string, req.body)
             break
         case 'DELETE':

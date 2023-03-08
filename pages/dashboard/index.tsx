@@ -8,7 +8,7 @@ import useSWR from 'swr'
 
 export default function Dashboard({page, limit}: {page: number, limit: number}) {
     const router = useRouter()
-    const [alert, showAlert] = useState(false)
+    const [alert, showAlert] = useState<boolean>(false)
 
     const { data } = useSWR<Pagination>(`/api/posts?page=${page}&limit=${limit}`, async (url: string) => {
         return fetch(url, {
@@ -34,7 +34,10 @@ export default function Dashboard({page, limit}: {page: number, limit: number}) 
 
     const handleOnSubmit = async (e: FormEvent<HTMLFormElement>, id: string) => {
         e.preventDefault()
-        const res = await fetch(`/api/post/${id}`, {
+
+        if (!confirm("Are you sure you want to delete this post ?")) {return}
+
+        const res = await fetch(`/api/posts/${id}`, {
             method: 'delete',
             headers: {
                 "Content-Type": "application/json",
@@ -42,10 +45,11 @@ export default function Dashboard({page, limit}: {page: number, limit: number}) 
             }
         })
 
-        if (res.status == 200) {
-            showAlert(true)
-            await router.push('/dashboard')
+        if (res.status === 200) {
+            return router.reload()
         }
+
+        showAlert(true)
     }
 
     return <div className="container mt-5">
@@ -56,8 +60,9 @@ export default function Dashboard({page, limit}: {page: number, limit: number}) 
             </Link>
         </div>
 
-        {alert && <div className="alert alert-success mb-3">
-            Post has been deleted successfully
+        {alert && <div className="alert alert-danger alert-dismissible fade show">
+            Failed to delete post
+            <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>}
 
         <table className="table table-striped">

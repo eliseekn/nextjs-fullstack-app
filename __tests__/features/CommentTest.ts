@@ -65,7 +65,7 @@ test('can update comment', async () => {
     await req.get('/comments')
         .set({Authorization: 'Bearer ' + authRes.body.token})
         .then(async (res: Response) => {
-            await req.patch('/comments/' + res.body[0].id)
+            await req.put('/comments/' + res.body[0].id)
                 .set({Authorization: 'Bearer ' + authRes.body.token})
                 .send({"message": "Lorem ipsum dolor sit amet"})
                 .expect(200)

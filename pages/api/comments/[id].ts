@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         case 'GET':
             await commentController.getItem(req.query.id as string)
             break
-        case 'PATCH':
+        case 'PUT':
             await ApiToken(req, res)
             await commentController.update(req.query.id as string, req.body)
             break

@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         case 'GET':
             await userController.getItem(req.query.id as string)
             break
-        case 'PATCH':
+        case 'PUT':
             await userController.update(req.query.id as string, req.body)
             break
         case 'DELETE':

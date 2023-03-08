@@ -44,6 +44,8 @@ export default function Edit() {
 
         if (res.status === 200) {
             showAlertSuccess(true)
+            const form = e.target as HTMLFormElement
+            form.reset()
         } else {
             showAlertError(true)
         }
@@ -55,11 +57,13 @@ export default function Edit() {
         <h1 className="mb-5">Edit post</h1>
 
         {alertSuccess && <div className="alert alert-success alert-dismissible fade show">
-            Post has been edited successfully <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            Post has been edited successfully
+            <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>}
 
         {alertError && <div className="alert alert-danger alert-dismissible fade show">
-            Failed to edit post <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            Failed to edit post
+            <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>}
 
         <div className="card shadow-sm">
