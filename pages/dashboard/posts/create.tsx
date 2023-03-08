@@ -1,13 +1,30 @@
 import { toBase64 } from "@/utils"
-import { FormEvent, useState, useLayoutEffect, useRef, ChangeEvent } from "react"
+import {FormEvent, useState, useLayoutEffect, useRef, ChangeEvent, useEffect} from "react"
+import Link from "next/link";
+import {User} from "@/pages/api/app/interfaces";
+import {useRouter} from "next/router";
 
 export default function Create() {
+    const router = useRouter()
+
     const [alertSuccess, showAlertSuccess] = useState<boolean>(false)
     const [alertError, showAlertError] = useState<boolean>(false)
     const [loading, showLoading] = useState<boolean>(false)
     const title = useRef<HTMLInputElement>(null)
     const content = useRef<HTMLTextAreaElement>(null)
     const [image, setImage] = useState<string>('')
+
+    useEffect(() => {
+        if (!localStorage.getItem('user')) {
+            router.push('/login')
+        }
+
+        const user: User = JSON.parse(localStorage.getItem('user') as string)
+
+        if (user.role !== 'admin') {
+            router.push('/')
+        }
+    })
 
     useLayoutEffect(() => {
         title.current?.focus()
@@ -46,15 +63,20 @@ export default function Create() {
     }
 
     return <div className="container mt-5">
-        <h1 className="mb-5">Create post</h1>
+        <div className="d-flex justify-content-between align-items-center mb-5">
+            <h1>Create post</h1>
+            <Link href="/dashboard" className="btn btn-primary">
+                Posts
+            </Link>
+        </div>
 
         {alertSuccess && <div className="alert alert-success alert-dismissible fade show">
-            Post has been created successfully
+            Post has been created successfully.
             <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>}
 
         {alertError && <div className="alert alert-danger alert-dismissible fade show">
-            Failed to create post
+            Fail to create post.
             <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>}
 

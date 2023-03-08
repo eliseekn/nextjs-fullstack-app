@@ -54,7 +54,7 @@ export default class UserRepository implements Repository {
 
         users = users.map(user => {
             if (user.id === id) {
-                user.updatedAt = new Date().toISOString()
+                newUser.updatedAt = new Date().toISOString()
                 return this.userModel.set({...user, ...newUser})
             }
 

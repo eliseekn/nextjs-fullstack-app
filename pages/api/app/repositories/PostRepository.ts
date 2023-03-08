@@ -75,8 +75,8 @@ export default class PostRepository implements Repository {
                     )
                 }
 
-                post.image = fileName
-                post.editedAt = new Date().toISOString()
+                newPost.image = fileName
+                newPost.editedAt = new Date().toISOString()
 
                 return this.postModel.set({...post, ...newPost})
             }

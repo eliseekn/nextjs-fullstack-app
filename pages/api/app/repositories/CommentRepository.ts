@@ -54,11 +54,10 @@ export default class CommentRepository implements Repository {
 
         comments = comments.map(comment => {
             if (comment.id === id) {
-                newComment.id = id
                 newComment.editedAt = new Date().toISOString()
             }
 
-            return this.commentModel.set(newComment)
+            return this.commentModel.set({...comment, ...newComment})
         })
 
         return await this.write({comments: comments}).then(async () => await this.read())

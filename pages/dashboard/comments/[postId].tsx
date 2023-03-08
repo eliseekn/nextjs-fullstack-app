@@ -1,12 +1,10 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import Image from 'next/image'
 import {FormEvent, useEffect, useState} from 'react'
-import {truncate} from "@/utils"
-import {Pagination, Post, User} from "@/pages/api/app/interfaces"
+import {Pagination, Comment, User} from "@/pages/api/app/interfaces"
 import useSWR from 'swr'
 
-export default function Dashboard({page, limit}: {page: number, limit: number}) {
+export default function Comments({page, limit}: {page: number, limit: number}) {
     const router = useRouter()
     const [alert, showAlert] = useState<boolean>(false)
 
@@ -22,7 +20,7 @@ export default function Dashboard({page, limit}: {page: number, limit: number}) 
         }
     })
 
-    const { data } = useSWR<Pagination>(`/api/posts?page=${page}&limit=${limit}`, async (url: string) => {
+    const { data } = useSWR<Pagination>(`/api/comments/${router.query.postId}?page=${page}&limit=${limit}`, async (url: string) => {
         return fetch(url, {
             headers: {"Authorization": "Bearer " + localStorage.getItem('token') as string}
         })
@@ -32,9 +30,9 @@ export default function Dashboard({page, limit}: {page: number, limit: number}) 
     const handleOnSubmit = async (e: FormEvent<HTMLFormElement>, id: string) => {
         e.preventDefault()
 
-        if (!confirm("Are you sure you want to delete this post ?")) {return}
+        if (!confirm("Are you sure you want to delete this comment ?")) {return}
 
-        const res = await fetch(`/api/posts/${id}`, {
+        const res = await fetch(`/api/comments/${id}`, {
             method: 'delete',
             headers: {"Authorization": "Bearer " + localStorage.getItem('token') as string}
         })
@@ -48,20 +46,15 @@ export default function Dashboard({page, limit}: {page: number, limit: number}) 
 
     return <div className="container mt-5">
         <div className="d-flex justify-content-between align-items-center mb-5">
-            <h1>Posts ({data?.items?.length ?? 0})</h1>
+            <h1>Comments ({data?.items?.length ?? 0})</h1>
 
-            <div className="d-flex align-items-center">
-                <Link href="/dashboard/posts/create" className="btn btn-primary">
-                    Create
-                </Link>
-                <Link href="/logout" className="btn btn-danger ms-3">
-                    Log out
-                </Link>
-            </div>
+            <Link href="/dashboard" className="btn btn-primary">
+                Posts
+            </Link>
         </div>
 
         {alert && <div className="alert alert-danger alert-dismissible fade show">
-            Fail to delete post.
+            Fail to delete comment.
             <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>}
 
@@ -69,9 +62,8 @@ export default function Dashboard({page, limit}: {page: number, limit: number}) 
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Image</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Content</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Message</th>
                     <th scope="col">Published at</th>
                     <th scope="col">Edited at</th>
                     <th scope="col"></th>
@@ -79,30 +71,21 @@ export default function Dashboard({page, limit}: {page: number, limit: number}) 
             </thead>
 
             <tbody>
-                {data?.items?.map((post: Post, i: number) => (
+                {data?.items?.map((comment: Comment, i: number) => (
                 <tr key={i} className="align-middle">
                     <th scope="row">{i + 1}</th>
-                    <td><Image src={`/upload/${post.image}`} className="img-fluid" alt="Image de l'article" width="200" height="200" /></td>
-                    <td>{post.title}</td>
-                    <td>{truncate(post.content, 290)}</td>
-                    <td>{new Date(post.publishedAt as string).toLocaleDateString('en', { year: "numeric", month: "short", day: "numeric"})}</td>
+                    <td>{comment.userId}</td>
+                    <td>{comment.message}</td>
+                    <td>{new Date(comment.publishedAt as string).toLocaleDateString('en', { year: "numeric", month: "short", day: "numeric"})}</td>
                     <td>
-                        {post.editedAt && new Date(post.editedAt as string).toLocaleDateString('en', { year: "numeric", month: "short", day: "numeric"})}
-                        {!post.editedAt && '-'}
+                        {comment.editedAt && new Date(comment.editedAt as string).toLocaleDateString('en', { year: "numeric", month: "short", day: "numeric"})}
+                        {!comment.editedAt && '-'}
                     </td>
                     <td>
                         <div className="d-flex align-items-center">
-                            <Link href={`/dashboard/comments/${post.id}`} title="Comments">
-                                <i className="bi bi-chat-fill text-primary"></i>
-                            </Link>
-
-                            <Link href={`/dashboard/posts/edit/${post.id}`} className="mx-3" title="Edit">
-                                <i className="bi bi-pencil-fill text-primary"></i>
-                            </Link>
-
-                            <form onSubmit={e => handleOnSubmit(e, post.id as string)}>
+                            <form onSubmit={e => handleOnSubmit(e, comment.id as string)}>
                                 <button type="submit" title="Delete" className="btn px-0">
-                                    <i className="bi bi-trash2-fill text-danger"></i>
+                                    <i className="bi bi-trash-fill text-danger"></i>
                                 </button>
                             </form>
                         </div>

@@ -1,11 +1,12 @@
-import { Post } from "@/pages/api/app/interfaces"
+import {Post, User} from "@/pages/api/app/interfaces"
 import { toBase64 } from "@/utils"
 import { useRouter } from "next/router"
-import { FormEvent, useState, useRef, ChangeEvent } from "react"
+import {FormEvent, useState, useRef, ChangeEvent, useEffect} from "react"
 import useSWR from 'swr'
+import Link from "next/link";
 
 export default function Edit() {
-    const { query } = useRouter()
+    const router = useRouter()
 
     const [alertSuccess, showAlertSuccess] = useState<boolean>(false)
     const [alertError, showAlertError] = useState<boolean>(false)
@@ -14,7 +15,19 @@ export default function Edit() {
     const content = useRef<HTMLTextAreaElement>(null)
     const [image, setImage] = useState<string>('')
 
-    const { data } = useSWR<Post>(`/api/posts/${query.id}`, async (url: string) => {
+    useEffect(() => {
+        if (!localStorage.getItem('user')) {
+            router.push('/login')
+        }
+
+        const user: User = JSON.parse(localStorage.getItem('user') as string)
+
+        if (user.role !== 'admin') {
+            router.push('/')
+        }
+    })
+
+    const { data } = useSWR<Post>(`/api/posts/${router.query.id}`, async (url: string) => {
         return fetch(url, {
             headers: {"Content-Type": "application/json"}
         })
@@ -29,7 +42,7 @@ export default function Edit() {
         e.preventDefault()
         showLoading(true)
 
-        const res = await fetch(`/api/posts/${query.id}`, {
+        const res = await fetch(`/api/posts/${router.query.id}`, {
             method: 'put',
             headers: {
                 "Content-Type": "application/json",
@@ -54,15 +67,20 @@ export default function Edit() {
     }
 
     return <div className="container mt-5">
-        <h1 className="mb-5">Edit post</h1>
+        <div className="d-flex justify-content-between align-items-center mb-5">
+            <h1>Edit post</h1>
+            <Link href="/dashboard" className="btn btn-primary">
+                Posts
+            </Link>
+        </div>
 
         {alertSuccess && <div className="alert alert-success alert-dismissible fade show">
-            Post has been edited successfully
+            Post has been edited successfully.
             <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>}
 
         {alertError && <div className="alert alert-danger alert-dismissible fade show">
-            Failed to edit post
+            Fail to edit post.
             <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>}
 
