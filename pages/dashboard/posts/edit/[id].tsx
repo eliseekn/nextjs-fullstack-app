@@ -4,6 +4,7 @@ import { useRouter } from "next/router"
 import {FormEvent, useState, useRef, ChangeEvent, useEffect} from "react"
 import useSWR from 'swr'
 import Link from "next/link";
+import {MyHead} from "@/components";
 
 export default function Edit() {
     const router = useRouter()
@@ -66,47 +67,51 @@ export default function Edit() {
         showLoading(false)
     }
 
-    return <div className="container mt-5">
-        <div className="d-flex justify-content-between align-items-center mb-5">
-            <h1>Edit post</h1>
-            <Link href="/dashboard" className="btn btn-primary">
-                Posts
-            </Link>
-        </div>
+    return <>
+        <MyHead title="Dashboard | Edit post" />
 
-        {alertSuccess && <div className="alert alert-success alert-dismissible fade show">
-            Post has been edited successfully.
-            <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>}
+        <div className="container mt-5">
+            <div className="d-flex justify-content-between align-items-center mb-5">
+                <h1>Edit post</h1>
+                <Link href="/dashboard" className="btn btn-primary">
+                    Posts
+                </Link>
+            </div>
 
-        {alertError && <div className="alert alert-danger alert-dismissible fade show">
-            Fail to edit post.
-            <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>}
+            {alertSuccess && <div className="alert alert-success alert-dismissible fade show">
+                Post has been edited successfully.
+                <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>}
 
-        <div className="card shadow-sm">
-            <div className="card-body">
-                <form onSubmit={handleOnSubmit}>
-                    <div className="mb-3">
-                        <label htmlFor="title" className="form-label">Title</label>
-                        <input type="text" id="title" name="title" className="form-control" defaultValue={data?.title} required ref={title} />
-                    </div>
+            {alertError && <div className="alert alert-danger alert-dismissible fade show">
+                Fail to edit post.
+                <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>}
 
-                    <div className="mb-3">
-                        <label htmlFor="file" className="form-label">Image</label>
-                        <input type="file" id="file" name="file" className="form-control" onChange={handleOnChange} />
-                    </div>
+            <div className="card shadow-sm">
+                <div className="card-body">
+                    <form onSubmit={handleOnSubmit}>
+                        <div className="mb-3">
+                            <label htmlFor="title" className="form-label">Title</label>
+                            <input type="text" id="title" name="title" className="form-control" defaultValue={data?.title} required ref={title} />
+                        </div>
 
-                    <div className="mb-3">
-                        <label htmlFor="content" className="form-label">Content</label>
-                        <textarea id="content" name="content" className="form-control" defaultValue={data?.content} required ref={content}></textarea>
-                    </div>
+                        <div className="mb-3">
+                            <label htmlFor="file" className="form-label">Image</label>
+                            <input type="file" id="file" name="file" className="form-control" onChange={handleOnChange} />
+                        </div>
 
-                    <button type="submit" className="btn btn-primary">
-                        {loading && <div className="spinner-border spinner-border-sm me-1" role="status"></div>} Save
-                    </button>
-                </form>
+                        <div className="mb-3">
+                            <label htmlFor="content" className="form-label">Content</label>
+                            <textarea id="content" name="content" className="form-control" defaultValue={data?.content} required ref={content}></textarea>
+                        </div>
+
+                        <button type="submit" className="btn btn-primary">
+                            {loading && <div className="spinner-border spinner-border-sm me-1" role="status"></div>} Save
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div> 
+    </>
 }

@@ -7,10 +7,10 @@ const Logout = () => {
     useEffect(() => {
         localStorage.removeItem('user')
         localStorage.removeItem('token')
-        router.push('/login')
+        router.push('/')
     })
 
-    return <p>Redirecting...</p>
+    return <p></p>
 }
 
 export default Logout
