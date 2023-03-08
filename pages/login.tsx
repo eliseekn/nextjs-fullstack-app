@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import {FormEvent, useEffect, useLayoutEffect, useRef, useState} from "react"
 
@@ -38,7 +39,11 @@ const Login = () => {
             localStorage.setItem('user', JSON.stringify(data.user))
             localStorage.setItem('token', data.token)
 
-            await router.push('/dashboard')
+            if (data.user.role === 'admin') {
+                await router.push('/dashboard')
+            } else {
+                await router.push('/')
+            }
         }
 
         showAlert(true)
@@ -52,7 +57,7 @@ const Login = () => {
             Invalid email or password
         </div>}
 
-        <div className="card shadow p-4">
+        <div className="card shadow p-4 mb-3">
             <form onSubmit={handleOnSubmit}>
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">Email</label>
@@ -68,6 +73,10 @@ const Login = () => {
                     {loading && <div className="spinner-border spinner-border-sm me-1" role="status"></div>} Log in
                 </button>
             </form>
+        </div>
+
+        <div className="d-flex justify-content-center">
+            <Link href="/" className='text-decoration-none'>Go back home</Link>
         </div>
     </div>
 }

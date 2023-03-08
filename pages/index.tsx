@@ -3,15 +3,18 @@ import {useRouter} from "next/router"
 import useSWR from "swr"
 import {Pagination, Post} from "@/pages/api/app/interfaces"
 import Link from "next/link"
+import { useEffect, useState } from "react"
 
 export default function Home({page, limit}: {page: number, limit: number}) {
     const router = useRouter()
+    const [auth, setAuth] = useState<boolean>(false) 
+
+    useEffect(() => {
+        setAuth(!localStorage.getItem('token') as boolean)
+    }, [])
 
     const { data } = useSWR<Pagination>(`/api/posts?page=${page}&limit=${limit}`, async (url: string) => {
-        return fetch(url, {
-            headers: {"Authorization": "Bearer " + localStorage.getItem('token') as string}
-        })
-            .then(res => res.json())
+        return fetch(url).then(res => res.json())
     })
 
     return <>
@@ -21,8 +24,8 @@ export default function Home({page, limit}: {page: number, limit: number}) {
             <div className="d-flex justify-content-between align-items-center mb-5">
                 <h1>Next.js Blog</h1>
 
-                {!localStorage.getItem('token') && <Link href="/login" className="btn btn-primary">Log in</Link>}
-                {localStorage.getItem('token') && <Link href="/logout" className="btn btn-danger">Log out</Link>}
+                {auth && <Link href="/login" className="btn btn-primary">Log in</Link>}
+                {!auth && <Link href="/logout" className="btn btn-danger">Log out</Link>}
             </div>
 
             <section className="my-5">

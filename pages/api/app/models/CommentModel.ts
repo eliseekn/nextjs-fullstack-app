@@ -4,7 +4,7 @@ import {randomUUID} from 'crypto'
 export default class CommentModel {
     private id?: string
     private postId?: string
-    private userId?: string
+    private email?: string
     private message?: string
     private publishedAt?: string
     private editedAt?: string
@@ -13,7 +13,7 @@ export default class CommentModel {
         return {
             id: this.id,
             postId: this.postId ?? '',
-            userId: this.userId ?? '',
+            email: this.email ?? '',
             message: this.message ?? '',
             publishedAt: this.publishedAt,
             editedAt: this.editedAt
@@ -23,7 +23,7 @@ export default class CommentModel {
     public set = (comment: Comment): Comment => {
         this.id = comment.id ?? randomUUID()
         this.postId = comment.postId
-        this.userId = comment.userId
+        this.email = comment.email
         this.message = comment.message
         this.publishedAt = comment.publishedAt ?? new Date().toISOString()
         this.editedAt = comment.editedAt

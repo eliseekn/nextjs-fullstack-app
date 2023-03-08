@@ -29,10 +29,7 @@ export default function Edit() {
     })
 
     const { data } = useSWR<Post>(`/api/posts/${router.query.id}`, async (url: string) => {
-        return fetch(url, {
-            headers: {"Content-Type": "application/json"}
-        })
-            .then(res => res.json())
+        return fetch(url).then(res => res.json())
     })
 
     const handleOnChange = async (e: ChangeEvent<HTMLInputElement>) => {
