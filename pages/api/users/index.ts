@@ -1,12 +1,12 @@
 import type {NextApiRequest, NextApiResponse} from 'next'
 import {UserController} from "../app/controllers"
 import {middleware} from "utils"
-import {cors, role, auth} from "@/pages/api/app/middlewares"
+import {cors, UserRole, ApiToken} from "@/pages/api/app/middlewares"
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     await middleware(req, res, cors)
-    await auth(req, res)
-    await role(req, res)
+    await ApiToken(req, res)
+    await UserRole(req, res)
 
     const userController = new UserController(res)
 

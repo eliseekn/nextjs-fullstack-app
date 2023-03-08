@@ -2,6 +2,9 @@
 const nextConfig = {
     reactStrictMode: true,
     images: {
+        dangerouslyAllowSVG: true,
+        contentDispositionType: 'attachment',
+        contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
         domains: ['127.0.0.1'],
     },
     //https://stackoverflow.com/a/74139318

@@ -1,5 +1,5 @@
 import {cors} from "./Cors"
-import {auth} from "./auth"
-import {role} from "./role"
+import {ApiToken} from "./ApiToken"
+import {UserRole} from "./UserRole"
 
-export {cors, auth, role}
+export {cors, ApiToken, UserRole}

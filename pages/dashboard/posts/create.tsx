@@ -1,7 +1,7 @@
 import { toBase64 } from "@/utils"
 import { FormEvent, useState, useLayoutEffect, useRef, ChangeEvent } from "react"
 
-const Create = () => {
+export default function Create() {
     const [alertSuccess, showAlertSuccess] = useState<boolean>(false)
     const [alertError, showAlertError] = useState<boolean>(false)
     const [loading, showLoading] = useState<boolean>(false)
@@ -82,5 +82,3 @@ const Create = () => {
         </div>
     </div> 
 }
-
-export default Create

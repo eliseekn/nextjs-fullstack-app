@@ -4,7 +4,7 @@ import { useRouter } from "next/router"
 import { FormEvent, useState, useRef, ChangeEvent } from "react"
 import useSWR from 'swr'
 
-const Edit = () => {
+export default function Edit() {
     const { query } = useRouter()
 
     const [alertSuccess, showAlertSuccess] = useState<boolean>(false)
@@ -30,7 +30,7 @@ const Edit = () => {
         showLoading(true)
 
         const res = await fetch(`/api/posts/${query.id}`, {
-            method: 'patch',
+            method: 'put',
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + localStorage.getItem('token') as string
@@ -55,13 +55,11 @@ const Edit = () => {
         <h1 className="mb-5">Edit post</h1>
 
         {alertSuccess && <div className="alert alert-success alert-dismissible fade show">
-            Post has been edited successfully
-            <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            Post has been edited successfully <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>}
 
         {alertError && <div className="alert alert-danger alert-dismissible fade show">
-            Failed to edit post
-            <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            Failed to edit post <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>}
 
         <div className="card shadow-sm">
@@ -90,5 +88,3 @@ const Edit = () => {
         </div>
     </div> 
 }
-
-export default Edit

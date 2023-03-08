@@ -2,11 +2,11 @@ import type {NextApiRequest, NextApiResponse} from 'next'
 import {TokenRepository, UserRepository} from "@/pages/api/app/repositories"
 import {Token, User} from "@/pages/api/app/interfaces"
 
-export const role = async (req: NextApiRequest, res: NextApiResponse, role: string = 'admin') => {
+export const UserRole = async (req: NextApiRequest, res: NextApiResponse, role: string = 'admin') => {
     const authorization = req.headers.authorization?.split(' ')
 
     if (!authorization || authorization.length !== 2) {
-        return res.status(403).json({status: 'errror'})
+        return res.status(403).json({status: 'error'})
     }
 
     const userRepository = new UserRepository()
@@ -17,7 +17,7 @@ export const role = async (req: NextApiRequest, res: NextApiResponse, role: stri
         .then((token: Token) => token)
 
     if (!token) {
-        return res.status(403).json({status: 'errror'})
+        return res.status(403).json({status: 'error'})
     }
 
     const user: User = await userRepository
@@ -25,6 +25,8 @@ export const role = async (req: NextApiRequest, res: NextApiResponse, role: stri
         .then((user: User) => user)
 
     if (!user || user.role !== role) {
-        return res.status(403).json({status: 'errror'})
+        return res.status(403).json({status: 'error'})
     }
+
+    return user
 }

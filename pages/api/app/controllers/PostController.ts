@@ -1,12 +1,15 @@
-import {NextApiResponse} from "next"
-import {Post} from "@/pages/api/app/interfaces"
+import {NextApiRequest, NextApiResponse} from "next"
+import {Post, User} from "@/pages/api/app/interfaces"
 import {PostRepository} from "@/pages/api/app/repositories"
+import {Auth} from "@/pages/api/app/services"
 
 export default class PostController {
+    private readonly req: NextApiRequest
     private res: NextApiResponse
     private postRepository: PostRepository
 
-    constructor(res: NextApiResponse) {
+    constructor(req: NextApiRequest, res: NextApiResponse) {
+        this.req = req
         this.res = res
         this.postRepository = new PostRepository()
     }
@@ -39,6 +42,9 @@ export default class PostController {
     }
 
     public store = async (post: Post) => {
+        const user = await Auth(this.req) as User
+        post.userId = user.id ?? ''
+
         await this.postRepository
             .create(post)
             .then(() => this.res.status(200).json({status: 'success'}))
