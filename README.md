@@ -1,6 +1,6 @@
 # Next.js full-stack application example 
 
-A full-stack web application made with Next.js.
+A full-stack web application made with Next.js and lowdb.
 
 ## Requirements
 ```
