@@ -9,7 +9,7 @@ export const truncate = (str: string, length: number) => {
 
 //https://stackoverflow.com/a/36441982
 export const base64ToFile = (data: string, fileName: string) => {
-    return fs.writeFile(path.relative(process.cwd(), `public/upload/${fileName}`), data.split(",")[1], {encoding: 'base64'}, (err) => console.log(err))
+    return fs.writeFile(getUploadPath(fileName), data.split(",")[1], {encoding: 'base64'}, err => console.log(err))
 }
 
 //https://gist.github.com/mathewbyrne/1280286
@@ -57,3 +57,5 @@ export const toBase64 = (file: any) => new Promise((resolve, reject) => {
     reader.onload = () => resolve(reader.result)
     reader.onerror = error => reject(error)
 })
+
+export const getUploadPath = (fileName: string): string => path.relative(process.cwd(), `public/upload/${fileName}`)

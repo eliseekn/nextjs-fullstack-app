@@ -1,9 +1,8 @@
 import db from '../database'
-import { paginate, slugify, base64ToFile } from 'utils'
+import {paginate, slugify, base64ToFile, getUploadPath} from 'utils'
 import {Post, Repository} from '../interfaces'
 import {PostModel} from '../models'
 import fs from "fs"
-import path from "path"
 
 export default class PostRepository implements Repository {
     private postModel: PostModel
@@ -61,29 +60,23 @@ export default class PostRepository implements Repository {
         let posts: Post[] = await this.read()
 
         posts = posts.map(post => {
-            if (post.id === id) {
-                const fileName: string = slugify(newPost.title)
+            if (post.id !== id) {return post}
 
-                try {
-                    if (newPost.image !== "") {
-                        fs.unlinkSync(path.relative(process.cwd(), `public/upload/${post.image}`))
-                        base64ToFile(newPost.image, fileName)
-                    } else {
-                        fs.rename(
-                            path.relative(process.cwd(), `public/upload/${post.image}`),
-                            path.relative(process.cwd(), `public/upload/${fileName}`),
-                            err => console.log(err)
-                        )
-                    }
-                } catch (err) {}
+            const fileName: string = slugify(newPost.title)
 
-                newPost.image = fileName
-                newPost.editedAt = new Date().toISOString()
+            try {
+                if (!newPost.image || newPost.image === "") {
+                    fs.rename(getUploadPath(post.image), getUploadPath(fileName), err => console.log(err))
+                } else {
+                    fs.unlinkSync(getUploadPath(post.image))
+                    base64ToFile(newPost.image, fileName)
+                }
+            } catch (err) {}
 
-                return this.postModel.set({...post, ...newPost})
-            }
+            newPost.image = fileName
+            newPost.editedAt = new Date().toISOString()
 
-            return post
+            return this.postModel.set({...post, ...newPost})
         })
 
         return await this.write({posts: posts}).then(async () => await this.read())
@@ -93,7 +86,7 @@ export default class PostRepository implements Repository {
         const post: Post = await this.findOne(id)
 
         try {
-            fs.unlinkSync(path.relative(process.cwd(), `public/upload/${post.image}`))
+            fs.unlinkSync(getUploadPath(post.image))
         } catch (err) {}
 
         let posts: Post[] = await this.read()

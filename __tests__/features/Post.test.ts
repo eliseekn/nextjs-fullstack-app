@@ -1,7 +1,7 @@
 import supertest, {Response} from "supertest"
 import fs from "fs"
-import path from "path"
 import {refreshDatabase} from "../concerns"
+import {getUploadPath} from "../../utils"
 
 const req = supertest.agent("http://localhost:3000/api")
 afterAll(() => refreshDatabase())
@@ -25,7 +25,7 @@ test('can store post', async () => {
         .expect(200)
         .then((res: Response) => {
             expect(res.body.status).toBe("success")
-            expect(fs.existsSync(path.relative(process.cwd(), 'public/upload/corrupti-praesentium-ratione'))).toBe(true)
+            expect(fs.existsSync(getUploadPath('corrupti-praesentium-ratione'))).toBe(true)
         })
 })
 
@@ -52,7 +52,7 @@ test('can update post', async () => {
                 .send({
                     "title": "Lorem ipsum dolor sit amet",
                     "content": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident",
-                    "image": ""
+                    // "image": ""
                 })
                 .expect(200)
                 .then((res: Response) => expect(res.body.status).toBe("success"))
@@ -144,7 +144,7 @@ test('can delete post', async () => {
                 .expect(200)
                 .then((res: Response) => {
                     expect(res.body.status).toBe("success")
-                    expect(fs.existsSync(path.relative(process.cwd(), 'public/upload/corrupti-praesentium-ratione'))).toBe(false)
+                    expect(fs.existsSync(getUploadPath('corrupti-praesentium-ratione'))).toBe(false)
                 })
         })
 })

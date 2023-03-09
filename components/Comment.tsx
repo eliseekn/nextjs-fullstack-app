@@ -1,17 +1,18 @@
 import useSWR from 'swr'
-import {Comment as CommentInterface} from "@/pages/api/app/interfaces"
-import { useState, FormEvent, useRef } from "react";
-import {useRouter} from "next/router";
+import {Comment as CommentI} from "@/pages/api/app/interfaces"
+import { useState, FormEvent, useRef } from "react"
+import {useRouter} from "next/router"
+import {Alert, AlertType} from "@/components"
 
 export default function Comment({postId}: {postId: string}) {
     const router = useRouter()
 
-    const [alert, showAlert] = useState<boolean>(false)
+    const [alert, setAlert] = useState<AlertType>()
     const [loading, showLoading] = useState<boolean>(false)
     const email = useRef<HTMLInputElement>(null)
     const message = useRef<HTMLTextAreaElement>(null)
 
-    const { data } = useSWR<CommentInterface[]>(`/api/comments/post/${postId}`, async (url: string) => {
+    const { data } = useSWR<CommentI[]>(`/api/comments/post/${postId}`, async (url: string) => {
         return fetch(url).then(res => res.json())
     })
 
@@ -33,19 +34,23 @@ export default function Comment({postId}: {postId: string}) {
         })
 
         if (res.status === 200) {
-            await router.reload()
-        } else {
-            showAlert(true)
+            router.reload()
         }
 
         showLoading(false)
+        setAlert({
+            display: true,
+            status: res.status,
+            concern: 'comment',
+            action: 'create'
+        })
     }
 
     return <>
         <h3 className="mb-3">Comments ({data?.length ?? 0})</h3>
 
         <div className="mt-3">
-            {data?.map((comment: CommentInterface) => (
+            {data?.map((comment: CommentI) => (
                 <div key={comment.id} className="mb-3">
                     <p className="fw-bold mb-1">{comment.email}</p>
                     <p className="mb-0">{comment.message}</p>
@@ -55,10 +60,7 @@ export default function Comment({postId}: {postId: string}) {
 
         <h4 className="mt-5">Leave a comment</h4>
 
-        {alert && <div className="alert alert-danger alert-dismissible fade show">
-            Fail to create comment.
-            <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>}
+        {alert && <Alert display={alert.display} status={alert.status} concern={alert.concern} action={alert.action} />}
 
         <form onSubmit={handleOnSubmit}>
             <div className="mb-3">

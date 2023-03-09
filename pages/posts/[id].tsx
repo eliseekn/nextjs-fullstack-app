@@ -17,7 +17,7 @@ export default function PostDetails() {
     return <>
         <_Head title={`Next.js Blog | ${data?.title}`} />
 
-        <main className="container my-5" style={{ width: '45%' }}>
+        <main className="container my-5" style={{ width: '800px' }}>
             <div className="d-flex justify-content-end mb-5">
                 <Link href="/" className="btn btn-primary">
                     Go back
