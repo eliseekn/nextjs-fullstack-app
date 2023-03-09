@@ -1,16 +1,18 @@
 import {MyHead, Article} from "@/components"
 import {useRouter} from "next/router"
 import useSWR from "swr"
-import {Pagination, Post} from "@/pages/api/app/interfaces"
+import {Pagination, Post, User} from "@/pages/api/app/interfaces"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
 export default function Home({page, limit}: {page: number, limit: number}) {
     const router = useRouter()
-    const [auth, setAuth] = useState<boolean>(false) 
+    const [notAuth, setNotAuth] = useState<boolean>(false)
+    const [user, setUser] = useState<User>()
 
     useEffect(() => {
-        setAuth(!localStorage.getItem('token') as boolean)
+        setNotAuth(!localStorage.getItem('token') as boolean)
+        setUser(JSON.parse(localStorage.getItem('user') as string) as User)
     }, [])
 
     const { data } = useSWR<Pagination>(`/api/posts?page=${page}&limit=${limit}`, async (url: string) => {
@@ -24,8 +26,12 @@ export default function Home({page, limit}: {page: number, limit: number}) {
             <div className="d-flex justify-content-between align-items-center mb-5">
                 <h1>Next.js Blog</h1>
 
-                {auth && <Link href="/login" className="btn btn-primary">Log in</Link>}
-                {!auth && <Link href="/logout" className="btn btn-danger">Log out</Link>}
+                {notAuth && <Link href="/login" className="btn btn-primary">Log in</Link>}
+
+                {!notAuth && <div className="d-flex align-items-center">
+                    {user?.role === 'admin' &&<Link href="/dashboard" className="btn btn-primary me-3">Dashboard</Link>}
+                    <Link href="/logout" className="btn btn-danger">Log out</Link>
+                </div>}
             </div>
 
             <section className="my-5">

@@ -21,7 +21,7 @@ export default function Comments({page, limit}: {page: number, limit: number}) {
         }
     })
 
-    const { data } = useSWR<Pagination>(`/api/comments/${router.query.postId}?page=${page}&limit=${limit}`, async (url: string) => {
+    const { data } = useSWR<Pagination>(`/api/comments/post/${router.query.postId}?page=${page}&limit=${limit}`, async (url: string) => {
         return fetch(url, {
             headers: {"Authorization": "Bearer " + localStorage.getItem('token') as string}
         })
@@ -78,7 +78,7 @@ export default function Comments({page, limit}: {page: number, limit: number}) {
                     {data?.items?.map((comment: Comment, i: number) => (
                     <tr key={i} className="align-middle">
                         <th scope="row">{i + 1}</th>
-                        <td>{comment.userId}</td>
+                        <td>{comment.email}</td>
                         <td>{comment.message}</td>
                         <td>{new Date(comment.publishedAt as string).toLocaleDateString('en', { year: "numeric", month: "short", day: "numeric"})}</td>
                         <td>
@@ -88,8 +88,8 @@ export default function Comments({page, limit}: {page: number, limit: number}) {
                         <td>
                             <div className="d-flex align-items-center">
                                 <form onSubmit={e => handleOnSubmit(e, comment.id as string)}>
-                                    <button type="submit" title="Delete" className="btn px-0">
-                                        <i className="bi bi-trash-fill text-danger"></i>
+                                    <button type="submit" title="Delete" className="btn px-0 border-0">
+                                        <i className="bi bi-trash2-fill text-danger"></i>
                                     </button>
                                 </form>
                             </div>

@@ -47,6 +47,11 @@ export default class CommentRepository implements Repository {
         return comments.filter(comment => comment[key as keyof Comment] === value)
     }
 
+    findAllByPaginate = async (key: string, value: string, page: number = 1, limit: number = 15) => {
+        let comments: Comment[] = await this.findAllBy(key, value)
+        return paginate(comments as [], page, limit)
+    }
+
     create = async (comment: Comment) => await this.add(comment).then(async () => await this.read())
 
     update = async (id: string, newComment: Comment) => {

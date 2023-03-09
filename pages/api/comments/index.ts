@@ -11,7 +11,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         case 'GET':
             await ApiToken(req, res)
             await UserRole(req, res)
-            await commentController.getCollection()
+            const {page, limit} = req.query
+            await commentController.getCollection(parseInt(page as string), parseInt(limit as string))
             break
         case 'POST':
             await ApiToken(req, res)

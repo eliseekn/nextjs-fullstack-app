@@ -64,16 +64,18 @@ export default class PostRepository implements Repository {
             if (post.id === id) {
                 const fileName: string = slugify(newPost.title)
 
-                if (newPost.image !== "") {
-                    fs.unlinkSync(path.relative(process.cwd(), `public/upload/${post.image}`))
-                    base64ToFile(newPost.image, fileName)
-                } else {
-                    fs.rename(
-                        path.relative(process.cwd(), `public/upload/${post.image}`),
-                        path.relative(process.cwd(), `public/upload/${fileName}`),
+                try {
+                    if (newPost.image !== "") {
+                        fs.unlinkSync(path.relative(process.cwd(), `public/upload/${post.image}`))
+                        base64ToFile(newPost.image, fileName)
+                    } else {
+                        fs.rename(
+                            path.relative(process.cwd(), `public/upload/${post.image}`),
+                            path.relative(process.cwd(), `public/upload/${fileName}`),
                             err => console.log(err)
-                    )
-                }
+                        )
+                    }
+                } catch (err) {}
 
                 newPost.image = fileName
                 newPost.editedAt = new Date().toISOString()
@@ -89,7 +91,10 @@ export default class PostRepository implements Repository {
 
     destroy = async (id: string) => {
         const post: Post = await this.findOne(id)
-        fs.unlinkSync(path.relative(process.cwd(), `public/upload/${post.image}`))
+
+        try {
+            fs.unlinkSync(path.relative(process.cwd(), `public/upload/${post.image}`))
+        } catch (err) {}
 
         let posts: Post[] = await this.read()
         posts = posts.filter(post => post.id !== id)

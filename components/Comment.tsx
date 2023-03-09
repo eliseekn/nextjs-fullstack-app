@@ -1,15 +1,17 @@
 import useSWR from 'swr'
-import {Post, Comment as CommentInterface} from "@/pages/api/app/interfaces"
+import {Comment as CommentInterface} from "@/pages/api/app/interfaces"
 import { useState, FormEvent, useRef } from "react";
+import {useRouter} from "next/router";
 
-export default function Comment({post}: {post: Post}) {
-    const [alertSuccess, showAlertSuccess] = useState<boolean>(false)
-    const [alertError, showAlertError] = useState<boolean>(false)
+export default function Comment({postId}: {postId: string}) {
+    const router = useRouter()
+
+    const [alert, showAlert] = useState<boolean>(false)
     const [loading, showLoading] = useState<boolean>(false)
     const email = useRef<HTMLInputElement>(null)
     const message = useRef<HTMLTextAreaElement>(null)
 
-    const { data } = useSWR<CommentInterface[]>(`/api/comments/${post.id}`, async (url: string) => {
+    const { data } = useSWR<CommentInterface[]>(`/api/comments/post/${postId}`, async (url: string) => {
         return fetch(url).then(res => res.json())
     })
 
@@ -17,24 +19,23 @@ export default function Comment({post}: {post: Post}) {
         e.preventDefault()
         showLoading(true)
 
-        const res = await fetch('/api/posts', {
+        const res = await fetch('/api/comments', {
             method: 'post',
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + localStorage.getItem('token') as string
             },
             body: JSON.stringify({
+                "postId": postId,
                 "email": email.current!.value,
                 "message": message.current!.value
             })
         })
 
         if (res.status === 200) {
-            showAlertSuccess(true)
-            const form = e.target as HTMLFormElement
-            form.reset()
+            await router.reload()
         } else {
-            showAlertError(true)
+            showAlert(true)
         }
 
         showLoading(false)
@@ -45,21 +46,16 @@ export default function Comment({post}: {post: Post}) {
 
         <div className="mt-3">
             {data?.map((comment: CommentInterface) => (
-                <div key={comment.id}>
-                    <p className="fw-bold">{comment.email}</p>
-                    <p className="fst-italic">{comment.message}</p> 
+                <div key={comment.id} className="mb-3">
+                    <p className="fw-bold mb-1">{comment.email}</p>
+                    <p className="mb-0">{comment.message}</p>
                 </div>
             ))}
         </div>
 
         <h4 className="mt-5">Leave a comment</h4>
 
-        {alertSuccess && <div className="alert alert-success alert-dismissible fade show">
-            Comment has been created successfully.
-            <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>}
-
-        {alertError && <div className="alert alert-danger alert-dismissible fade show">
+        {alert && <div className="alert alert-danger alert-dismissible fade show">
             Fail to create comment.
             <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>}
@@ -79,5 +75,5 @@ export default function Comment({post}: {post: Post}) {
                 {loading && <div className="spinner-border spinner-border-sm me-1" role="status"></div>} Save
             </button>
         </form>
-        </>
+    </>
 }

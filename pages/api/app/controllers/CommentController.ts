@@ -11,17 +11,31 @@ export default class CommentController {
         this.commentRepository = new CommentRepository()
     }
 
-    public getCollection = async () => {
+    public getCollection = async (page?: number, limit?: number) => {
+        if (!page || !limit) {
+            return await this.commentRepository
+                .findAll()
+                .then((comments: Comment[]) => this.res.status(200).json(comments))
+                .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
+        }
+
         await this.commentRepository
-            .findAll()
-            .then((comments: Comment[]) => this.res.status(200).json(comments))
+            .findAllPaginate(page, limit)
+            .then(comments => this.res.status(200).json(comments))
             .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
     }
 
-    public getPostCollection = async (postId: string) => {
+    public getPostCollection = async (postId: string, page?: number, limit?: number) => {
+        if (!page || !limit) {
+            return await this.commentRepository
+                .findAllBy('postId', postId)
+                .then((comments: Comment[]) => this.res.status(200).json(comments))
+                .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
+        }
+
         await this.commentRepository
-            .findAllBy('postId', postId)
-            .then((comments: Comment[]) => this.res.status(200).json(comments))
+            .findAllByPaginate('postId', postId, page, limit)
+            .then(comments => this.res.status(200).json(comments))
             .catch(e => this.res.status(500).json({status: 'error', message: e.message}))
     }
 

@@ -76,7 +76,7 @@ const Login = () => {
         </div>
 
         <div className="d-flex justify-content-center">
-            <Link href="/" className='text-decoration-none'>Go back home</Link>
+            <Link href="/">Go back home</Link>
         </div>
     </div>
 }

@@ -55,10 +55,13 @@ export default function Dashboard({page, limit}: {page: number, limit: number}) 
                 <h1>Posts ({data?.items?.length ?? 0})</h1>
 
                 <div className="d-flex align-items-center">
-                    <Link href="/dashboard/posts/create" className="btn btn-primary">
+                    <Link href="/" className="btn btn-primary">
+                        Home
+                    </Link>
+                    <Link href="/dashboard/posts/create" className="btn btn-primary mx-3">
                         Create
                     </Link>
-                    <Link href="/logout" className="btn btn-danger ms-3">
+                    <Link href="/logout" className="btn btn-danger">
                         Log out
                     </Link>
                 </div>
@@ -86,7 +89,7 @@ export default function Dashboard({page, limit}: {page: number, limit: number}) 
                     {data?.items?.map((post: Post, i: number) => (
                     <tr key={i} className="align-middle">
                         <th scope="row">{i + 1}</th>
-                        <td><Image src={`/upload/${post.image}`} className="img-fluid" alt="Image de l'article" width="200" height="200" /></td>
+                        <td><Image src={`/upload/${post.image}`} className="img-fluid" alt="Image de l'article" width="500" height="500" /></td>
                         <td>{post.title}</td>
                         <td>{truncate(post.content, 290)}</td>
                         <td>{new Date(post.publishedAt as string).toLocaleDateString('en', { year: "numeric", month: "short", day: "numeric"})}</td>
@@ -105,7 +108,7 @@ export default function Dashboard({page, limit}: {page: number, limit: number}) 
                                 </Link>
 
                                 <form onSubmit={e => handleOnSubmit(e, post.id as string)}>
-                                    <button type="submit" title="Delete" className="btn px-0">
+                                    <button type="submit" title="Delete" className="btn px-0 border-0">
                                         <i className="bi bi-trash2-fill text-danger"></i>
                                     </button>
                                 </form>

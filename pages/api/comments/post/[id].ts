@@ -9,7 +9,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (req.method === 'GET') {
         const {id} = req.query
-        await commentController.getPostCollection(id as string)
+        const {page, limit} = req.query
+        await commentController.getPostCollection(id as string, parseInt(page as string), parseInt(limit as string))
     }
 
     res.status(405).json({status: 'error'})
