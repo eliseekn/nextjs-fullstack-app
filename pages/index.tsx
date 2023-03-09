@@ -1,4 +1,4 @@
-import {MyHead, Article} from "@/components"
+import {_Head, Article} from "@/components"
 import {useRouter} from "next/router"
 import useSWR from "swr"
 import {Pagination, Post, User} from "@/pages/api/app/interfaces"
@@ -20,7 +20,7 @@ export default function Home({page, limit}: {page: number, limit: number}) {
     })
 
     return <>
-        <MyHead title="Next.js Blog" />
+        <_Head title="Next.js Blog" />
 
         <main className="container my-5">
             <div className="d-flex justify-content-between align-items-center mb-5">

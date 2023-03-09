@@ -5,11 +5,11 @@ import {FormEvent, useEffect, useState} from 'react'
 import {truncate} from "@/utils"
 import {Pagination, Post, User} from "@/pages/api/app/interfaces"
 import useSWR from 'swr'
-import {MyHead} from "@/components";
+import {Alert, AlertType, _Head} from "@/components";
 
 export default function Dashboard({page, limit}: {page: number, limit: number}) {
     const router = useRouter()
-    const [alert, showAlert] = useState<boolean>(false)
+    const [alert, setAlert] = useState<AlertType>()
 
     useEffect(() => {
         if (!localStorage.getItem('user')) {
@@ -44,11 +44,16 @@ export default function Dashboard({page, limit}: {page: number, limit: number}) 
             return router.reload()
         }
 
-        showAlert(true)
+        setAlert({
+            display: true,
+            status: res.status,
+            concern: 'post',
+            action: 'delete'
+        })
     }
 
     return <>
-        <MyHead title="Dashboard" />
+        <_Head title="Dashboard" />
 
         <div className="container mt-5">
             <div className="d-flex justify-content-between align-items-center mb-5">
@@ -67,10 +72,7 @@ export default function Dashboard({page, limit}: {page: number, limit: number}) 
                 </div>
             </div>
 
-            {alert && <div className="alert alert-danger alert-dismissible fade show">
-                Fail to delete post.
-                <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>}
+            {alert && <Alert display={alert.display} status={alert.status} concern={alert.concern} action={alert.action} />}
 
             <table className="table table-striped">
                 <thead>

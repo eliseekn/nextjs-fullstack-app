@@ -4,13 +4,12 @@ import { useRouter } from "next/router"
 import {FormEvent, useState, useRef, ChangeEvent, useEffect} from "react"
 import useSWR from 'swr'
 import Link from "next/link";
-import {MyHead} from "@/components";
+import {Alert, AlertType, _Head} from "@/components";
 
 export default function Edit() {
     const router = useRouter()
 
-    const [alertSuccess, showAlertSuccess] = useState<boolean>(false)
-    const [alertError, showAlertError] = useState<boolean>(false)
+    const [alert, setAlert] = useState<AlertType>()
     const [loading, showLoading] = useState<boolean>(false)
     const title = useRef<HTMLInputElement>(null)
     const content = useRef<HTMLTextAreaElement>(null)
@@ -54,36 +53,37 @@ export default function Edit() {
         })
 
         if (res.status === 200) {
-            showAlertSuccess(true)
             const form = e.target as HTMLFormElement
             form.reset()
-        } else {
-            showAlertError(true)
         }
-
+        
         showLoading(false)
+        setAlert({
+            display: true,
+            status: res.status,
+            concern: 'post',
+            action: 'edit'
+        })
     }
 
     return <>
-        <MyHead title="Dashboard | Edit post" />
+        <_Head title="Dashboard | Edit post" />
 
         <div className="container mt-5">
             <div className="d-flex justify-content-between align-items-center mb-5">
                 <h1>Edit post</h1>
-                <Link href="/dashboard" className="btn btn-primary">
-                    Posts
-                </Link>
+
+                <div className="d-flex align-items-center">
+                    <Link href="/" className="btn btn-primary me-3">
+                        Home
+                    </Link>
+                    <Link href="/dashboard" className="btn btn-dark">
+                        Go back
+                    </Link>
+                </div>
             </div>
 
-            {alertSuccess && <div className="alert alert-success alert-dismissible fade show">
-                Post has been edited successfully.
-                <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>}
-
-            {alertError && <div className="alert alert-danger alert-dismissible fade show">
-                Fail to edit post.
-                <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>}
+            {alert && <Alert display={alert.display} status={alert.status} concern={alert.concern} action={alert.action} />}
 
             <div className="card shadow-sm">
                 <div className="card-body">

@@ -1,4 +1,4 @@
-import { MyHead, Comment } from "@/components";
+import { _Head, Comment } from "@/components";
 import { useRouter } from "next/router";
 import useSWR from 'swr'
 import { Post } from "../api/app/interfaces"
@@ -15,12 +15,12 @@ export default function PostDetails() {
     console.log(data)
 
     return <>
-        <MyHead title={`Next.js Blog | ${data?.title}`} />
+        <_Head title={`Next.js Blog | ${data?.title}`} />
 
         <main className="container my-5" style={{ width: '45%' }}>
             <div className="d-flex justify-content-end mb-5">
                 <Link href="/" className="btn btn-primary">
-                    Go back home
+                    Go back
                 </Link>
             </div>
 

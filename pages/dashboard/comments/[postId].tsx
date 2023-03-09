@@ -3,11 +3,11 @@ import Link from 'next/link'
 import {FormEvent, useEffect, useState} from 'react'
 import {Pagination, Comment, User} from "@/pages/api/app/interfaces"
 import useSWR from 'swr'
-import {MyHead} from "@/components";
+import {Alert, AlertType, _Head} from "@/components";
 
 export default function Comments({page, limit}: {page: number, limit: number}) {
     const router = useRouter()
-    const [alert, showAlert] = useState<boolean>(false)
+    const [alert, setAlert] = useState<AlertType>()
 
     useEffect(() => {
         if (!localStorage.getItem('user')) {
@@ -42,25 +42,32 @@ export default function Comments({page, limit}: {page: number, limit: number}) {
             return router.reload()
         }
 
-        showAlert(true)
+        setAlert({
+            display: true,
+            status: res.status,
+            concern: 'comment',
+            action: 'delete'
+        })
     }
 
     return <>
-        <MyHead title="Dashboard | Edit post" />
+        <_Head title="Dashboard | Edit post" />
 
         <div className="container mt-5">
             <div className="d-flex justify-content-between align-items-center mb-5">
                 <h1>Comments ({data?.items?.length ?? 0})</h1>
 
-                <Link href="/dashboard" className="btn btn-primary">
-                    Posts
-                </Link>
+                <div className="d-flex align-items-center">
+                    <Link href="/" className="btn btn-primary me-3">
+                        Home
+                    </Link>
+                    <Link href="/dashboard" className="btn btn-dark">
+                        Go back
+                    </Link>
+                </div>
             </div>
 
-            {alert && <div className="alert alert-danger alert-dismissible fade show">
-                Fail to delete comment.
-                <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>}
+            {alert && <Alert display={alert.display} status={alert.status} concern={alert.concern} action={alert.action} />}
 
             <table className="table table-striped">
                 <thead>
