@@ -52,12 +52,8 @@ export default function Edit() {
             })
         })
 
-        if (res.status === 200) {
-            const form = e.target as HTMLFormElement
-            form.reset()
-        }
-        
         showLoading(false)
+
         setAlert({
             display: true,
             status: res.status,

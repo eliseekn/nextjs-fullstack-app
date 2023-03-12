@@ -12,10 +12,10 @@ export default function Alert({display, status, concern, action}: AlertType) {
     const setMessage = () => {
         switch (status) {
             case 200: return `${ucFirst(concern)} ${ed(action)} succesfully.`
-            case 400: return `Fail to ${action} ${concern.toLowerCase()} - Bad request.` 
-            case 403: return `Fail to ${action} ${concern.toLowerCase()} - Forbidden.` 
-            case 404: return `Fail to ${action} ${concern.toLowerCase()} - Post not found.` 
-            case 500: return `Fail to ${action} ${concern.toLowerCase()} - Internal server error.` 
+            case 400: return `Fail to ${action} ${concern.toLowerCase()} - ${status} Bad request.`
+            case 403: return `Fail to ${action} ${concern.toLowerCase()} - ${status} Forbidden.`
+            case 404: return `Fail to ${action} ${concern.toLowerCase()} - ${status} Post not found.`
+            case 500: return `Fail to ${action} ${concern.toLowerCase()} - ${status} Internal server error.`
         }
     }
 

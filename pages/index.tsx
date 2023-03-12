@@ -20,11 +20,11 @@ export default function Home({page, limit}: {page: number, limit: number}) {
     })
 
     return <>
-        <_Head title="Next.js Blog" />
+        <_Head title="My Blog" />
 
         <main className="container my-5">
             <div className="d-flex justify-content-between align-items-center mb-5">
-                <h1>Next.js Blog</h1>
+                <h1>My Blog</h1>
 
                 {notAuth && <Link href="/login" className="btn btn-primary">Log in</Link>}
 
