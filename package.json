@@ -2,6 +2,11 @@
     "name": "nextjs-blog",
     "version": "0.1.0",
     "private": true,
+    "author": {
+        "name": "Elisée K. N'Guessan",
+        "email": "eliseekn@gmail.com",
+        "url": "https://eliseekn.netlify.app"
+    },
     "scripts": {
         "dev": "next dev",
         "build": "next build",
