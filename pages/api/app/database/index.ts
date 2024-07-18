@@ -5,7 +5,9 @@ import {JSONFile} from '@/node_modules/lowdb/lib/adapters/JSONFile'
 import {Tables} from "@/pages/api/app/interfaces"
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const file = join(__dirname, 'db.json')
+const file = process.env.NODE_ENV === "production"
+    ? join("/tmp/db.json")
+    : join(__dirname, "db.json")
 const adapter = new JSONFile<Tables>(file)
 const db = new Low(adapter)
 

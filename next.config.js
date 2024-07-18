@@ -6,6 +6,11 @@ const nextConfig = {
         contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
         domains: ['127.0.0.1'],
     },
+    experimental: {
+        outputFileTracingIncludes: {
+            "/api/users/[id]": ["./app/database/**/*.json"],
+        },
+    },
     //https://stackoverflow.com/a/74139318
     webpack: (config, { isServer }) => {
         if (!isServer) {
